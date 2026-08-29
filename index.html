@@ -116,7 +116,7 @@ p{margin:0}
 label.field{display:flex;flex-direction:column;gap:6px}
 label.field > span{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
 input[type="text"],input[type="tel"],input[type="password"]{
-  font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+  font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);
   border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;
   transition:border-color .15s ease, background .15s ease;
 }
@@ -139,6 +139,25 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .type:has(input:checked) .t-name::before{border-color:var(--accent);box-shadow:inset 0 0 0 3.5px var(--accent)}
 .type:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-wash)}
 
+/* date picker */
+.datebar{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.datebar::-webkit-scrollbar{height:5px}
+.datebar::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
+.datebar::-webkit-scrollbar-track{background:transparent}
+.chip{flex:none;scroll-snap-align:center;min-width:78px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:11px;background:var(--surface-2);color:var(--ink);font:inherit;cursor:pointer;touch-action:manipulation;transition:background .15s ease,border-color .15s ease}
+.chip .d{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25}
+.chip .w{font-size:11px;color:var(--muted);line-height:1.3}
+.chip .left{font-size:10.5px;font-weight:500;color:var(--accent);letter-spacing:.01em;margin-top:1px}
+.chip:hover:not(:disabled){border-color:var(--accent)}
+.chip:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-color:var(--accent)}
+.chip[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip[aria-selected="true"] .w,.chip[aria-selected="true"] .left{color:rgba(255,255,255,.88)}
+.chip:disabled{opacity:.45;cursor:not-allowed;border-style:dashed}
+.chip:disabled .left{color:var(--faint)}
+.allbtn{align-self:flex-start;font:inherit;font-size:12.5px;color:var(--muted);background:none;border:none;border-bottom:1px solid var(--line-strong);padding:2px 0;cursor:pointer;touch-action:manipulation}
+.allbtn:hover{color:var(--accent);border-color:var(--accent)}
+.allbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-radius:3px}
+
 /* slots */
 .daygroup{display:flex;flex-direction:column;gap:9px}
 .daybar{display:flex;align-items:baseline;gap:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
@@ -146,8 +165,8 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .daybar .dow{font-size:12px;color:var(--faint)}
 .daybar .left{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
 .daybar .left.none{color:var(--faint)}
-.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
-.slot{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:9px}
+.slot{font:inherit;text-align:left;display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:58px;touch-action:manipulation;padding:11px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
 .slot .time{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
 .slot .tag{font-size:11px;color:var(--faint);letter-spacing:.02em}
 .slot:hover:not(:disabled){border-color:var(--accent)}
@@ -165,7 +184,7 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
 .summary .s1{font-size:12px;color:var(--faint)}
 .summary .s2{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
-button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
+button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;min-height:46px;touch-action:manipulation;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
 button.primary:hover:not(:disabled){opacity:.9}
 button.primary:disabled{opacity:.42;cursor:not-allowed}
 button.primary:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
@@ -188,6 +207,17 @@ button.ghost:hover{border-color:var(--accent);color:var(--accent)}
 .done .note{font-size:12.5px;color:var(--muted)}
 
 /* admin */
+select{font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:8px;padding:10px 12px;width:100%}
+select:focus{outline:none;border-color:var(--accent)}
+select:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
+.apanel{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:11px}
+.cap2{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.agrid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:560px){.agrid{grid-template-columns:1fr 1fr}}
+.rowbtn{font:inherit;font-size:11.5px;padding:5px 10px;border-radius:6px;border:1px solid var(--line-strong);background:transparent;color:var(--danger);cursor:pointer;touch-action:manipulation}
+.rowbtn:hover{border-color:var(--danger)}
+.rowbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+tr.blocked td{color:var(--faint)}
 .admin{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:0 15px}
 .admin summary{cursor:pointer;padding:13px 0;font-size:13px;color:var(--muted);list-style:none}
 .admin summary::-webkit-details-marker{display:none}
@@ -270,7 +300,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
             <h2>상담 형태</h2>
           </div>
           <div class="step-body">
-            <div class="types">
+            <div class="types" id="typewrap">
               <label class="type">
                 <input type="radio" name="ctype" value="zoom">
                 <span class="t-name">줌 온라인</span>
@@ -297,7 +327,9 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
             <span class="hint">회당 60분</span>
           </div>
           <div class="step-body">
+            <div class="datebar" id="datebar" aria-label="상담 날짜 선택"></div>
             <div id="slotwrap" style="display:flex;flex-direction:column;gap:20px"></div>
+            <button type="button" class="allbtn" id="alltoggle">전체 일정 한눈에 보기</button>
           </div>
         </section>
 
@@ -318,20 +350,41 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   </div>
 
   <details class="admin" id="admin">
-    <summary>원장님 확인용 · 예약 내역</summary>
+    <summary>원장님 관리자 모드 · 예약 관리</summary>
     <div class="abody">
       <div class="arow" id="admin-gate">
-        <input type="password" id="admin-code" placeholder="확인 코드" style="max-width:150px" autocomplete="off">
+        <input type="password" id="admin-code" placeholder="관리자 코드" style="max-width:170px" autocomplete="off">
         <button type="button" class="ghost" id="admin-open">열기</button>
+        <span class="mono" id="admin-msg" style="font-size:12px;color:var(--danger)"></span>
       </div>
+
       <div id="admin-panel" hidden>
+        <div class="arow" style="justify-content:space-between">
+          <span class="arow">
+            <button type="button" class="ghost" id="admin-refresh">새로고침</button>
+            <button type="button" class="ghost" id="copy-csv">CSV 복사</button>
+          </span>
+          <span class="mono" id="admin-note" style="font-size:12px;color:var(--faint)"></span>
+        </div>
+
         <div class="tablewrap"><table>
-          <thead><tr><th>날짜</th><th>시간</th><th>이름</th><th>연락처</th><th>형태</th><th>접수</th><th></th></tr></thead>
+          <thead><tr><th>날짜</th><th>시간</th><th>이름</th><th>연락처</th><th>형태</th><th>접수</th><th>관리</th></tr></thead>
           <tbody id="admin-rows"></tbody>
         </table></div>
-        <div class="arow" style="margin-top:12px">
-          <button type="button" class="ghost" id="copy-csv">CSV 복사</button>
-          <span class="mono" style="font-size:12px;color:var(--faint)" id="copy-note"></span>
+
+        <div class="apanel">
+          <p class="cap2">전화로 받은 예약 넣기 · 상담 불가 시간 막기</p>
+          <div class="agrid">
+            <label class="field"><span>시간</span><select id="a-slot"></select></label>
+            <label class="field"><span>상담 형태</span><select id="a-type"><option value="zoom">줌 온라인</option><option value="phone">전화</option><option value="visit">대면</option></select></label>
+            <label class="field"><span>자녀 이름</span><input type="text" id="a-name" placeholder="예: 김로보" maxlength="20" autocomplete="off"></label>
+            <label class="field"><span>보호자 연락처</span><input type="tel" id="a-phone" placeholder="010-1234-5678" maxlength="13" autocomplete="off"></label>
+          </div>
+          <div class="arow">
+            <button type="button" class="ghost" id="a-add">이 시간에 예약 넣기</button>
+            <button type="button" class="ghost" id="a-block">이 시간 막기</button>
+          </div>
+          <p style="font-size:12px;color:var(--faint);margin:0">막은 시간은 보호자 화면에 <b>상담 불가</b>로 표시되고 선택할 수 없습니다. 되돌리려면 위 표에서 해제하세요.</p>
         </div>
       </div>
     </div>
@@ -353,7 +406,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
      비워 두면 예약이 이 기기에만 저장됩니다. */
   var API_URL = "https://script.google.com/macros/s/AKfycbz6jfAe9rtGXUFx3cPCtok7hzizu7_YGalDqNuXpPHEVy9RitQcH0whM_LgeR6bo_Qd/exec";
 
-  var ADMIN_CODE = "2027";
+  /* 관리자 코드. 서버(Code.gs)의 ADMIN_KEY 와 반드시 같은 값이어야 합니다. */
+  var ADMIN_CODE = "robo2027";
 
   var SLOTS = [
     ["09-21","월","10:00","11:00"],["09-21","월","11:00","12:00"],["09-21","월","13:30","14:30"],["09-21","월","20:00","21:00"],["09-21","월","21:00","22:00"],
@@ -372,13 +426,17 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     return { id: r[0].replace("-","") + "-" + r[2].replace(":",""), date:r[0], dow:r[1], start:r[2], end:r[3] };
   });
 
-  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면" };
+  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면", block:"상담 불가" };
   var LOCAL_KEY = "robomakers-booking-v1";
 
   var state = readState();
   var api = null;          // artifact capability namespace
   var mode = "local";      // "shared" | "local" | "readonly"
   var sel = { slot:null };
+  var selDate = null;
+  var showAll = false;
+  var adminKey = null;
+  var adminRows = [];
   var busy = false;
 
 
@@ -436,37 +494,79 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
 
   /* ---------- rendering ---------- */
 
-  function renderSlots(){
-    var booked = bookedMap();
-    var days = [];
-    var index = {};
+  function daysIndex(){
+    var days = [], index = {};
     SLOTS.forEach(function(s){
       if (!index[s.date]) { index[s.date] = { date:s.date, dow:s.dow, items:[] }; days.push(index[s.date]); }
       index[s.date].items.push(s);
     });
+    return days;
+  }
 
-    var html = days.map(function(d){
-      var open = d.items.filter(function(s){ return !booked[s.id]; }).length;
-      var rows = d.items.map(function(s){
-        var b = booked[s.id];
-        if (b) {
-          return '<button type="button" class="slot" disabled aria-disabled="true">' +
-                 '<span class="time">' + s.start + ' ~ ' + s.end + '</span>' +
-                 '<span class="tag">예약 마감 · ' + esc(maskName(b.name)) + '</span></button>';
-        }
-        var on = sel.slot === s.id;
-        return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+  function openCount(d, booked){
+    return d.items.filter(function(s){ return !booked[s.id]; }).length;
+  }
+
+  function shortDate(d){
+    return String(parseInt(d.date.slice(0,2), 10)) + "/" + String(parseInt(d.date.slice(3), 10));
+  }
+
+  function slotButtons(d, booked){
+    return d.items.map(function(s){
+      var b = booked[s.id];
+      if (b) {
+        var tag = (b.type === "block") ? "상담 불가" : "예약 마감 · " + esc(maskName(b.name));
+        return '<button type="button" class="slot" disabled aria-disabled="true">' +
                '<span class="time">' + s.start + ' ~ ' + s.end + '</span>' +
-               '<span class="tag">' + (on ? "선택함" : "예약 가능") + '</span></button>';
-      }).join("");
-      return '<div class="daygroup' + (open === 0 ? " full" : "") + '">' +
-             '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일</span>' +
-             '<span class="dow">' + d.dow + '요일</span>' +
-             '<span class="left' + (open === 0 ? " none" : "") + '">' + (open === 0 ? "전부 마감" : open + "자리 남음") + '</span></div>' +
-             '<div class="slots">' + rows + '</div></div>';
+               '<span class="tag">' + tag + '</span></button>';
+      }
+      var on = sel.slot === s.id;
+      return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+             '<span class="time">' + s.start + ' ~ ' + s.end + '</span>' +
+             '<span class="tag">' + (on ? "선택함" : "예약 가능") + '</span></button>';
     }).join("");
+  }
 
-    $("slotwrap").innerHTML = html;
+  function dayBlock(d, booked){
+    var n = openCount(d, booked);
+    return '<div class="daygroup' + (n === 0 ? " full" : "") + '">' +
+           '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일</span>' +
+           '<span class="dow">' + d.dow + '요일</span>' +
+           '<span class="left' + (n === 0 ? " none" : "") + '">' + (n === 0 ? "전부 마감" : n + "자리 남음") + '</span></div>' +
+           '<div class="slots">' + slotButtons(d, booked) + '</div></div>';
+  }
+
+  function renderDates(days, booked){
+    $("datebar").innerHTML = days.map(function(d){
+      var n = openCount(d, booked);
+      var on = (!showAll && d.date === selDate);
+      return '<button type="button" class="chip' + (n === 0 ? " full" : "") + '" data-date="' + d.date + '"' +
+             ' aria-selected="' + (on ? "true" : "false") + '"' + (n === 0 ? " disabled" : "") + '>' +
+             '<span class="d">' + shortDate(d) + '</span>' +
+             '<span class="w">' + d.dow + '</span>' +
+             '<span class="left">' + (n === 0 ? "마감" : n + "자리") + '</span></button>';
+    }).join("");
+  }
+
+  function renderSlots(){
+    var booked = bookedMap();
+    var days = daysIndex();
+
+    if (selDate && !days.some(function(d){ return d.date === selDate; })) selDate = null;
+    if (!selDate) {
+      var first = days.filter(function(d){ return openCount(d, booked) > 0; })[0] || days[0];
+      selDate = first.date;
+    }
+
+    renderDates(days, booked);
+
+    if (showAll) {
+      $("slotwrap").innerHTML = days.map(function(d){ return dayBlock(d, booked); }).join("");
+    } else {
+      var cur = days.filter(function(d){ return d.date === selDate; })[0];
+      $("slotwrap").innerHTML = dayBlock(cur, booked);
+    }
+    $("alltoggle").textContent = showAll ? "선택한 날짜만 보기" : "전체 일정 한눈에 보기";
   }
 
   function renderStats(){
@@ -498,10 +598,10 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     var name = $("f-name").value.trim();
     var phone = normPhone($("f-phone").value);
     var t = document.querySelector('input[name="ctype"]:checked');
-    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요." };
-    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요." };
-    if (!t) return { err:"상담 형태를 선택해 주세요." };
-    if (!sel.slot) return { err:"상담 일시를 선택해 주세요." };
+    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요.", focus:"f-name" };
+    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요.", focus:"f-phone" };
+    if (!t) return { err:"상담 형태를 선택해 주세요.", focus:"typewrap" };
+    if (!sel.slot) return { err:"상담 일시를 선택해 주세요.", focus:"datebar" };
     if (bookedMap()[sel.slot]) return { err:"방금 다른 분이 이 시간을 예약했습니다. 다른 시간을 선택해 주세요." };
     return { ok:{ id: String(Date.now()) + "-" + Math.random().toString(36).slice(2,7), slot: sel.slot, name: name, phone: phone, type: t.value, at: new Date().toISOString() } };
   }
@@ -535,7 +635,16 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     if (busy) return;
     showErr("");
     var v = validate();
-    if (v.err) { showErr(v.err); render(); return; }
+    if (v.err) {
+      showErr(v.err);
+      render();
+      var el = v.focus ? $(v.focus) : null;
+      if (el) {
+        el.scrollIntoView({ block:"center", behavior:"smooth" });
+        if (el.tagName === "INPUT") setTimeout(function(){ el.focus(); }, 350);
+      }
+      return;
+    }
 
     var dupe = state.bookings.filter(function(b){ return b.name === v.ok.name; })[0];
     if (dupe && !$("submit").dataset.confirmed) {
@@ -677,26 +786,100 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     $("submit").textContent = "예약하기";
   }
 
-  /* ---------- admin ---------- */
+  /* ---------- 관리자 모드 ---------- */
+
+  function adminNote(t){ $("admin-note").textContent = t || ""; }
+
+  function adminCall(action, extra, cb){
+    var body = { action: action, key: adminKey };
+    for (var k in extra) if (Object.prototype.hasOwnProperty.call(extra, k)) body[k] = extra[k];
+
+    if (mode === "api") {
+      fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(body) })
+        .then(function(r){ return r.json(); })
+        .then(cb)["catch"](function(){ cb({ ok:false, error:"network" }); });
+      return;
+    }
+    localAdmin(action, extra, cb);
+  }
+
+  function localAdmin(action, extra, cb){
+    if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
+    if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
+
+    var next;
+    if (action === "cancel") {
+      next = { bookings: state.bookings.filter(function(b){ return b.slot !== extra.slot; }) };
+    } else {
+      if (bookedMap()[extra.slot]) { cb({ ok:false, error:"taken" }); return; }
+      next = { bookings: state.bookings.concat([{
+        id: String(Date.now()), slot: extra.slot, name: extra.name,
+        phone: extra.phone || "", type: extra.type, at: new Date().toISOString()
+      }]) };
+    }
+
+    if (mode === "shared" && api) {
+      api.publish(buildDoc(next)).then(function(){ /* 화면이 새 버전으로 다시 열립니다 */ })
+        ["catch"](function(e){ cb({ ok:false, error: (e && e.code) || "publish" }); });
+      return;
+    }
+    state = next;
+    saveLocal();
+    cb({ ok:true, bookings: state.bookings });
+  }
+
+  function adminApply(d, okText){
+    if (!d || !d.ok) {
+      adminNote(d && d.error === "unauthorized" ? "관리자 코드가 맞지 않습니다"
+              : d && d.error === "taken" ? "이미 예약이 있는 시간입니다"
+              : d && d.error === "network" ? "연결에 실패했습니다"
+              : "처리하지 못했습니다");
+      return false;
+    }
+    if (Array.isArray(d.bookings)) {
+      adminRows = d.bookings;
+      state = { bookings: d.bookings };
+    }
+    renderAdmin();
+    render();
+    adminNote(okText || "");
+    return true;
+  }
 
   function renderAdmin(){
-    var rows = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+    var rows = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
     $("admin-rows").innerHTML = rows.length ? rows.map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || { date:"?", dow:"?", start:"?", end:"?" };
-      return "<tr><td class=\"mono\">" + s.date.replace("-", "/") + "(" + s.dow + ")</td>" +
-             "<td class=\"mono\">" + s.start + "~" + s.end + "</td>" +
-             "<td>" + esc(b.name) + "</td>" +
-             "<td class=\"mono\">" + esc(b.phone) + "</td>" +
-             "<td>" + TYPES[b.type] + "</td>" +
-             "<td class=\"mono\">" + esc(String(b.at).slice(5,16).replace("T", " ")) + "</td><td></td></tr>";
+      var blocked = b.type === "block";
+      return '<tr' + (blocked ? ' class="blocked"' : '') + '>' +
+             '<td class="mono">' + s.date.replace("-", "/") + "(" + s.dow + ")</td>" +
+             '<td class="mono">' + s.start + "~" + s.end + "</td>" +
+             "<td>" + esc(blocked ? "—" : b.name) + "</td>" +
+             '<td class="mono">' + esc(blocked ? "—" : (b.phone || "")) + "</td>" +
+             "<td>" + (TYPES[b.type] || b.type) + "</td>" +
+             '<td class="mono">' + esc(shortAt(b.at)) + "</td>" +
+             '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
+             (blocked ? "해제" : "취소") + "</button></td></tr>";
     }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.</td></tr>';
+
+    var booked = bookedMap();
+    $("a-slot").innerHTML = SLOTS.filter(function(x){ return !booked[x.id]; })
+      .map(function(x){ return '<option value="' + x.id + '">' + slotLabel(x) + "</option>"; }).join("")
+      || '<option value="">남은 시간이 없습니다</option>';
+  }
+
+  function shortAt(v){
+    var d = new Date(v);
+    if (isNaN(d.getTime())) return String(v).slice(0, 16).replace("T", " ");
+    var p = function(n){ return (n < 10 ? "0" : "") + n; };
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
   }
 
   function csv(){
-    var head = "날짜,시간,이름,연락처,상담형태,접수시각";
-    var lines = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
+    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각";
+    var lines = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
-      return [s.date, (s.start || "") + "-" + (s.end || ""), b.name, b.phone, TYPES[b.type], b.at].join(",");
+      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at)].join(",");
     });
     return [head].concat(lines).join("\n");
   }
@@ -709,6 +892,22 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   }
 
   /* ---------- wiring ---------- */
+
+  $("datebar").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest(".chip[data-date]") : null;
+    if (!btn || btn.disabled) return;
+    selDate = btn.dataset.date;
+    showAll = false;
+    showErr("");
+    render();
+    var now = $("datebar").querySelector('.chip[data-date="' + selDate + '"]');
+    if (now && now.scrollIntoView) now.scrollIntoView({ block:"nearest", inline:"center", behavior:"smooth" });
+  });
+
+  $("alltoggle").addEventListener("click", function(){
+    showAll = !showAll;
+    render();
+  });
 
   $("slotwrap").addEventListener("click", function(e){
     var btn = e.target.closest ? e.target.closest(".slot[data-slot]") : null;
@@ -731,17 +930,82 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   $("form").addEventListener("submit", function(e){ e.preventDefault(); submit(); });
 
   $("admin-open").addEventListener("click", function(){
-    if ($("admin-code").value.trim() !== ADMIN_CODE) { $("admin-code").value = ""; $("admin-code").placeholder = "코드가 다릅니다"; return; }
-    $("admin-gate").hidden = true;
-    $("admin-panel").hidden = false;
-    renderAdmin();
+    var code = $("admin-code").value.trim();
+    if (!code) return;
+    $("admin-msg").textContent = "확인 중…";
+    adminKey = code;
+    adminCall("list", {}, function(d){
+      if (!d || !d.ok) {
+        adminKey = null;
+        $("admin-code").value = "";
+        $("admin-msg").textContent = (d && d.error === "network") ? "연결에 실패했습니다" : "코드가 맞지 않습니다";
+        return;
+      }
+      $("admin-msg").textContent = "";
+      $("admin-gate").hidden = true;
+      $("admin-panel").hidden = false;
+      adminRows = d.bookings || [];
+      renderAdmin();
+      adminNote(adminRows.length + "건");
+    });
   });
+
+  $("admin-code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("admin-open").click(); });
+
+  $("admin-refresh").addEventListener("click", function(){
+    adminNote("불러오는 중…");
+    adminCall("list", {}, function(d){ if (adminApply(d)) adminNote(adminRows.length + "건 · 방금 갱신"); });
+  });
+
+  $("admin-rows").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest("[data-cancel]") : null;
+    if (!btn) return;
+    if (btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1";
+      btn.textContent = "한 번 더";
+      setTimeout(function(){ if (btn.dataset.armed === "1") { btn.dataset.armed = ""; renderAdmin(); } }, 4000);
+      return;
+    }
+    var slot = btn.dataset.cancel;
+    adminNote("처리 중…");
+    adminCall("cancel", { slot: slot }, function(d){ adminApply(d, "처리했습니다"); });
+  });
+
+  $("a-add").addEventListener("click", function(){
+    var slot = $("a-slot").value;
+    var name = $("a-name").value.trim();
+    var phone = normPhone($("a-phone").value);
+    if (!slot) { adminNote("남은 시간이 없습니다"); return; }
+    if (name.length < 2) { adminNote("자녀 이름을 적어 주세요"); return; }
+    if (!phone) { adminNote("연락처를 010-1234-5678 형식으로 적어 주세요"); return; }
+    adminNote("등록 중…");
+    var so = slotOf(slot) || {};
+    adminCall("add", { slot: slot, name: name, phone: phone, type: $("a-type").value,
+                       date: so.date ? "2026-" + so.date : "", time: (so.start || "") + "~" + (so.end || "") }, function(d){
+      if (adminApply(d, "등록했습니다")) { $("a-name").value = ""; $("a-phone").value = ""; }
+    });
+  });
+
+  $("a-block").addEventListener("click", function(){
+    var slot = $("a-slot").value;
+    if (!slot) { adminNote("남은 시간이 없습니다"); return; }
+    adminNote("처리 중…");
+    var sb = slotOf(slot) || {};
+    adminCall("block", { slot: slot, date: sb.date ? "2026-" + sb.date : "", time: (sb.start || "") + "~" + (sb.end || "") },
+      function(d){ adminApply(d, "이 시간을 막았습니다"); });
+  });
+
+  $("a-phone").addEventListener("input", function(){
+    var d = this.value.replace(/[^0-9]/g, "").slice(0, 11);
+    this.value = d.length > 7 ? d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7)
+               : d.length > 3 ? d.slice(0,3) + "-" + d.slice(3) : d;
+  });
+
   $("copy-csv").addEventListener("click", function(){
     var text = csv();
-    var note = $("copy-note");
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function(){ note.textContent = "복사했습니다"; })["catch"](function(){ note.textContent = "복사 실패 — 표를 직접 선택해 주세요"; });
-    } else { note.textContent = "이 브라우저에서는 표를 직접 선택해 주세요"; }
+      navigator.clipboard.writeText(text).then(function(){ adminNote("CSV를 복사했습니다"); })["catch"](function(){ adminNote("복사 실패 — 표를 직접 선택해 주세요"); });
+    } else { adminNote("이 브라우저에서는 표를 직접 선택해 주세요"); }
   });
 
   /* boot */
@@ -894,7 +1158,7 @@ p{margin:0}
 label.field{display:flex;flex-direction:column;gap:6px}
 label.field > span{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
 input[type="text"],input[type="tel"],input[type="password"]{
-  font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+  font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);
   border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;
   transition:border-color .15s ease, background .15s ease;
 }
@@ -917,6 +1181,25 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .type:has(input:checked) .t-name::before{border-color:var(--accent);box-shadow:inset 0 0 0 3.5px var(--accent)}
 .type:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-wash)}
 
+/* date picker */
+.datebar{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.datebar::-webkit-scrollbar{height:5px}
+.datebar::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
+.datebar::-webkit-scrollbar-track{background:transparent}
+.chip{flex:none;scroll-snap-align:center;min-width:78px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:11px;background:var(--surface-2);color:var(--ink);font:inherit;cursor:pointer;touch-action:manipulation;transition:background .15s ease,border-color .15s ease}
+.chip .d{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25}
+.chip .w{font-size:11px;color:var(--muted);line-height:1.3}
+.chip .left{font-size:10.5px;font-weight:500;color:var(--accent);letter-spacing:.01em;margin-top:1px}
+.chip:hover:not(:disabled){border-color:var(--accent)}
+.chip:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-color:var(--accent)}
+.chip[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip[aria-selected="true"] .w,.chip[aria-selected="true"] .left{color:rgba(255,255,255,.88)}
+.chip:disabled{opacity:.45;cursor:not-allowed;border-style:dashed}
+.chip:disabled .left{color:var(--faint)}
+.allbtn{align-self:flex-start;font:inherit;font-size:12.5px;color:var(--muted);background:none;border:none;border-bottom:1px solid var(--line-strong);padding:2px 0;cursor:pointer;touch-action:manipulation}
+.allbtn:hover{color:var(--accent);border-color:var(--accent)}
+.allbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-radius:3px}
+
 /* slots */
 .daygroup{display:flex;flex-direction:column;gap:9px}
 .daybar{display:flex;align-items:baseline;gap:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
@@ -924,8 +1207,8 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .daybar .dow{font-size:12px;color:var(--faint)}
 .daybar .left{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
 .daybar .left.none{color:var(--faint)}
-.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
-.slot{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:9px}
+.slot{font:inherit;text-align:left;display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:58px;touch-action:manipulation;padding:11px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
 .slot .time{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
 .slot .tag{font-size:11px;color:var(--faint);letter-spacing:.02em}
 .slot:hover:not(:disabled){border-color:var(--accent)}
@@ -943,7 +1226,7 @@ input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
 .summary .s1{font-size:12px;color:var(--faint)}
 .summary .s2{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
-button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
+button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;min-height:46px;touch-action:manipulation;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
 button.primary:hover:not(:disabled){opacity:.9}
 button.primary:disabled{opacity:.42;cursor:not-allowed}
 button.primary:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
@@ -966,6 +1249,17 @@ button.ghost:hover{border-color:var(--accent);color:var(--accent)}
 .done .note{font-size:12.5px;color:var(--muted)}
 
 /* admin */
+select{font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:8px;padding:10px 12px;width:100%}
+select:focus{outline:none;border-color:var(--accent)}
+select:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
+.apanel{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:11px}
+.cap2{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.agrid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:560px){.agrid{grid-template-columns:1fr 1fr}}
+.rowbtn{font:inherit;font-size:11.5px;padding:5px 10px;border-radius:6px;border:1px solid var(--line-strong);background:transparent;color:var(--danger);cursor:pointer;touch-action:manipulation}
+.rowbtn:hover{border-color:var(--danger)}
+.rowbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+tr.blocked td{color:var(--faint)}
 .admin{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:0 15px}
 .admin summary{cursor:pointer;padding:13px 0;font-size:13px;color:var(--muted);list-style:none}
 .admin summary::-webkit-details-marker{display:none}
@@ -1048,7 +1342,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
             <h2>상담 형태<\/h2>
           <\/div>
           <div class="step-body">
-            <div class="types">
+            <div class="types" id="typewrap">
               <label class="type">
                 <input type="radio" name="ctype" value="zoom">
                 <span class="t-name">줌 온라인<\/span>
@@ -1075,7 +1369,9 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
             <span class="hint">회당 60분<\/span>
           <\/div>
           <div class="step-body">
+            <div class="datebar" id="datebar" aria-label="상담 날짜 선택"><\/div>
             <div id="slotwrap" style="display:flex;flex-direction:column;gap:20px"><\/div>
+            <button type="button" class="allbtn" id="alltoggle">전체 일정 한눈에 보기<\/button>
           <\/div>
         <\/section>
 
@@ -1096,20 +1392,41 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   <\/div>
 
   <details class="admin" id="admin">
-    <summary>원장님 확인용 · 예약 내역<\/summary>
+    <summary>원장님 관리자 모드 · 예약 관리<\/summary>
     <div class="abody">
       <div class="arow" id="admin-gate">
-        <input type="password" id="admin-code" placeholder="확인 코드" style="max-width:150px" autocomplete="off">
+        <input type="password" id="admin-code" placeholder="관리자 코드" style="max-width:170px" autocomplete="off">
         <button type="button" class="ghost" id="admin-open">열기<\/button>
+        <span class="mono" id="admin-msg" style="font-size:12px;color:var(--danger)"><\/span>
       <\/div>
+
       <div id="admin-panel" hidden>
+        <div class="arow" style="justify-content:space-between">
+          <span class="arow">
+            <button type="button" class="ghost" id="admin-refresh">새로고침<\/button>
+            <button type="button" class="ghost" id="copy-csv">CSV 복사<\/button>
+          <\/span>
+          <span class="mono" id="admin-note" style="font-size:12px;color:var(--faint)"><\/span>
+        <\/div>
+
         <div class="tablewrap"><table>
-          <thead><tr><th>날짜<\/th><th>시간<\/th><th>이름<\/th><th>연락처<\/th><th>형태<\/th><th>접수<\/th><th><\/th><\/tr><\/thead>
+          <thead><tr><th>날짜<\/th><th>시간<\/th><th>이름<\/th><th>연락처<\/th><th>형태<\/th><th>접수<\/th><th>관리<\/th><\/tr><\/thead>
           <tbody id="admin-rows"><\/tbody>
         <\/table><\/div>
-        <div class="arow" style="margin-top:12px">
-          <button type="button" class="ghost" id="copy-csv">CSV 복사<\/button>
-          <span class="mono" style="font-size:12px;color:var(--faint)" id="copy-note"><\/span>
+
+        <div class="apanel">
+          <p class="cap2">전화로 받은 예약 넣기 · 상담 불가 시간 막기<\/p>
+          <div class="agrid">
+            <label class="field"><span>시간<\/span><select id="a-slot"><\/select><\/label>
+            <label class="field"><span>상담 형태<\/span><select id="a-type"><option value="zoom">줌 온라인<\/option><option value="phone">전화<\/option><option value="visit">대면<\/option><\/select><\/label>
+            <label class="field"><span>자녀 이름<\/span><input type="text" id="a-name" placeholder="예: 김로보" maxlength="20" autocomplete="off"><\/label>
+            <label class="field"><span>보호자 연락처<\/span><input type="tel" id="a-phone" placeholder="010-1234-5678" maxlength="13" autocomplete="off"><\/label>
+          <\/div>
+          <div class="arow">
+            <button type="button" class="ghost" id="a-add">이 시간에 예약 넣기<\/button>
+            <button type="button" class="ghost" id="a-block">이 시간 막기<\/button>
+          <\/div>
+          <p style="font-size:12px;color:var(--faint);margin:0">막은 시간은 보호자 화면에 <b>상담 불가<\/b>로 표시되고 선택할 수 없습니다. 되돌리려면 위 표에서 해제하세요.<\/p>
         <\/div>
       <\/div>
     <\/div>
@@ -1131,7 +1448,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
      비워 두면 예약이 이 기기에만 저장됩니다. */
   var API_URL = "https://script.google.com/macros/s/AKfycbz6jfAe9rtGXUFx3cPCtok7hzizu7_YGalDqNuXpPHEVy9RitQcH0whM_LgeR6bo_Qd/exec";
 
-  var ADMIN_CODE = "2027";
+  /* 관리자 코드. 서버(Code.gs)의 ADMIN_KEY 와 반드시 같은 값이어야 합니다. */
+  var ADMIN_CODE = "robo2027";
 
   var SLOTS = [
     ["09-21","월","10:00","11:00"],["09-21","월","11:00","12:00"],["09-21","월","13:30","14:30"],["09-21","월","20:00","21:00"],["09-21","월","21:00","22:00"],
@@ -1150,13 +1468,17 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     return { id: r[0].replace("-","") + "-" + r[2].replace(":",""), date:r[0], dow:r[1], start:r[2], end:r[3] };
   });
 
-  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면" };
+  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면", block:"상담 불가" };
   var LOCAL_KEY = "robomakers-booking-v1";
 
   var state = readState();
   var api = null;          // artifact capability namespace
   var mode = "local";      // "shared" | "local" | "readonly"
   var sel = { slot:null };
+  var selDate = null;
+  var showAll = false;
+  var adminKey = null;
+  var adminRows = [];
   var busy = false;
 
 
@@ -1214,37 +1536,79 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
 
   /* ---------- rendering ---------- */
 
-  function renderSlots(){
-    var booked = bookedMap();
-    var days = [];
-    var index = {};
+  function daysIndex(){
+    var days = [], index = {};
     SLOTS.forEach(function(s){
       if (!index[s.date]) { index[s.date] = { date:s.date, dow:s.dow, items:[] }; days.push(index[s.date]); }
       index[s.date].items.push(s);
     });
+    return days;
+  }
 
-    var html = days.map(function(d){
-      var open = d.items.filter(function(s){ return !booked[s.id]; }).length;
-      var rows = d.items.map(function(s){
-        var b = booked[s.id];
-        if (b) {
-          return '<button type="button" class="slot" disabled aria-disabled="true">' +
-                 '<span class="time">' + s.start + ' ~ ' + s.end + '<\/span>' +
-                 '<span class="tag">예약 마감 · ' + esc(maskName(b.name)) + '<\/span><\/button>';
-        }
-        var on = sel.slot === s.id;
-        return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+  function openCount(d, booked){
+    return d.items.filter(function(s){ return !booked[s.id]; }).length;
+  }
+
+  function shortDate(d){
+    return String(parseInt(d.date.slice(0,2), 10)) + "/" + String(parseInt(d.date.slice(3), 10));
+  }
+
+  function slotButtons(d, booked){
+    return d.items.map(function(s){
+      var b = booked[s.id];
+      if (b) {
+        var tag = (b.type === "block") ? "상담 불가" : "예약 마감 · " + esc(maskName(b.name));
+        return '<button type="button" class="slot" disabled aria-disabled="true">' +
                '<span class="time">' + s.start + ' ~ ' + s.end + '<\/span>' +
-               '<span class="tag">' + (on ? "선택함" : "예약 가능") + '<\/span><\/button>';
-      }).join("");
-      return '<div class="daygroup' + (open === 0 ? " full" : "") + '">' +
-             '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일<\/span>' +
-             '<span class="dow">' + d.dow + '요일<\/span>' +
-             '<span class="left' + (open === 0 ? " none" : "") + '">' + (open === 0 ? "전부 마감" : open + "자리 남음") + '<\/span><\/div>' +
-             '<div class="slots">' + rows + '<\/div><\/div>';
+               '<span class="tag">' + tag + '<\/span><\/button>';
+      }
+      var on = sel.slot === s.id;
+      return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+             '<span class="time">' + s.start + ' ~ ' + s.end + '<\/span>' +
+             '<span class="tag">' + (on ? "선택함" : "예약 가능") + '<\/span><\/button>';
     }).join("");
+  }
 
-    $("slotwrap").innerHTML = html;
+  function dayBlock(d, booked){
+    var n = openCount(d, booked);
+    return '<div class="daygroup' + (n === 0 ? " full" : "") + '">' +
+           '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일<\/span>' +
+           '<span class="dow">' + d.dow + '요일<\/span>' +
+           '<span class="left' + (n === 0 ? " none" : "") + '">' + (n === 0 ? "전부 마감" : n + "자리 남음") + '<\/span><\/div>' +
+           '<div class="slots">' + slotButtons(d, booked) + '<\/div><\/div>';
+  }
+
+  function renderDates(days, booked){
+    $("datebar").innerHTML = days.map(function(d){
+      var n = openCount(d, booked);
+      var on = (!showAll && d.date === selDate);
+      return '<button type="button" class="chip' + (n === 0 ? " full" : "") + '" data-date="' + d.date + '"' +
+             ' aria-selected="' + (on ? "true" : "false") + '"' + (n === 0 ? " disabled" : "") + '>' +
+             '<span class="d">' + shortDate(d) + '<\/span>' +
+             '<span class="w">' + d.dow + '<\/span>' +
+             '<span class="left">' + (n === 0 ? "마감" : n + "자리") + '<\/span><\/button>';
+    }).join("");
+  }
+
+  function renderSlots(){
+    var booked = bookedMap();
+    var days = daysIndex();
+
+    if (selDate && !days.some(function(d){ return d.date === selDate; })) selDate = null;
+    if (!selDate) {
+      var first = days.filter(function(d){ return openCount(d, booked) > 0; })[0] || days[0];
+      selDate = first.date;
+    }
+
+    renderDates(days, booked);
+
+    if (showAll) {
+      $("slotwrap").innerHTML = days.map(function(d){ return dayBlock(d, booked); }).join("");
+    } else {
+      var cur = days.filter(function(d){ return d.date === selDate; })[0];
+      $("slotwrap").innerHTML = dayBlock(cur, booked);
+    }
+    $("alltoggle").textContent = showAll ? "선택한 날짜만 보기" : "전체 일정 한눈에 보기";
   }
 
   function renderStats(){
@@ -1276,10 +1640,10 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     var name = $("f-name").value.trim();
     var phone = normPhone($("f-phone").value);
     var t = document.querySelector('input[name="ctype"]:checked');
-    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요." };
-    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요." };
-    if (!t) return { err:"상담 형태를 선택해 주세요." };
-    if (!sel.slot) return { err:"상담 일시를 선택해 주세요." };
+    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요.", focus:"f-name" };
+    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요.", focus:"f-phone" };
+    if (!t) return { err:"상담 형태를 선택해 주세요.", focus:"typewrap" };
+    if (!sel.slot) return { err:"상담 일시를 선택해 주세요.", focus:"datebar" };
     if (bookedMap()[sel.slot]) return { err:"방금 다른 분이 이 시간을 예약했습니다. 다른 시간을 선택해 주세요." };
     return { ok:{ id: String(Date.now()) + "-" + Math.random().toString(36).slice(2,7), slot: sel.slot, name: name, phone: phone, type: t.value, at: new Date().toISOString() } };
   }
@@ -1313,7 +1677,16 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     if (busy) return;
     showErr("");
     var v = validate();
-    if (v.err) { showErr(v.err); render(); return; }
+    if (v.err) {
+      showErr(v.err);
+      render();
+      var el = v.focus ? $(v.focus) : null;
+      if (el) {
+        el.scrollIntoView({ block:"center", behavior:"smooth" });
+        if (el.tagName === "INPUT") setTimeout(function(){ el.focus(); }, 350);
+      }
+      return;
+    }
 
     var dupe = state.bookings.filter(function(b){ return b.name === v.ok.name; })[0];
     if (dupe && !$("submit").dataset.confirmed) {
@@ -1455,26 +1828,100 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     $("submit").textContent = "예약하기";
   }
 
-  /* ---------- admin ---------- */
+  /* ---------- 관리자 모드 ---------- */
+
+  function adminNote(t){ $("admin-note").textContent = t || ""; }
+
+  function adminCall(action, extra, cb){
+    var body = { action: action, key: adminKey };
+    for (var k in extra) if (Object.prototype.hasOwnProperty.call(extra, k)) body[k] = extra[k];
+
+    if (mode === "api") {
+      fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(body) })
+        .then(function(r){ return r.json(); })
+        .then(cb)["catch"](function(){ cb({ ok:false, error:"network" }); });
+      return;
+    }
+    localAdmin(action, extra, cb);
+  }
+
+  function localAdmin(action, extra, cb){
+    if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
+    if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
+
+    var next;
+    if (action === "cancel") {
+      next = { bookings: state.bookings.filter(function(b){ return b.slot !== extra.slot; }) };
+    } else {
+      if (bookedMap()[extra.slot]) { cb({ ok:false, error:"taken" }); return; }
+      next = { bookings: state.bookings.concat([{
+        id: String(Date.now()), slot: extra.slot, name: extra.name,
+        phone: extra.phone || "", type: extra.type, at: new Date().toISOString()
+      }]) };
+    }
+
+    if (mode === "shared" && api) {
+      api.publish(buildDoc(next)).then(function(){ /* 화면이 새 버전으로 다시 열립니다 */ })
+        ["catch"](function(e){ cb({ ok:false, error: (e && e.code) || "publish" }); });
+      return;
+    }
+    state = next;
+    saveLocal();
+    cb({ ok:true, bookings: state.bookings });
+  }
+
+  function adminApply(d, okText){
+    if (!d || !d.ok) {
+      adminNote(d && d.error === "unauthorized" ? "관리자 코드가 맞지 않습니다"
+              : d && d.error === "taken" ? "이미 예약이 있는 시간입니다"
+              : d && d.error === "network" ? "연결에 실패했습니다"
+              : "처리하지 못했습니다");
+      return false;
+    }
+    if (Array.isArray(d.bookings)) {
+      adminRows = d.bookings;
+      state = { bookings: d.bookings };
+    }
+    renderAdmin();
+    render();
+    adminNote(okText || "");
+    return true;
+  }
 
   function renderAdmin(){
-    var rows = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+    var rows = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
     $("admin-rows").innerHTML = rows.length ? rows.map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || { date:"?", dow:"?", start:"?", end:"?" };
-      return "<tr><td class=\"mono\">" + s.date.replace("-", "/") + "(" + s.dow + ")<\/td>" +
-             "<td class=\"mono\">" + s.start + "~" + s.end + "<\/td>" +
-             "<td>" + esc(b.name) + "<\/td>" +
-             "<td class=\"mono\">" + esc(b.phone) + "<\/td>" +
-             "<td>" + TYPES[b.type] + "<\/td>" +
-             "<td class=\"mono\">" + esc(String(b.at).slice(5,16).replace("T", " ")) + "<\/td><td><\/td><\/tr>";
+      var blocked = b.type === "block";
+      return '<tr' + (blocked ? ' class="blocked"' : '') + '>' +
+             '<td class="mono">' + s.date.replace("-", "/") + "(" + s.dow + ")<\/td>" +
+             '<td class="mono">' + s.start + "~" + s.end + "<\/td>" +
+             "<td>" + esc(blocked ? "—" : b.name) + "<\/td>" +
+             '<td class="mono">' + esc(blocked ? "—" : (b.phone || "")) + "<\/td>" +
+             "<td>" + (TYPES[b.type] || b.type) + "<\/td>" +
+             '<td class="mono">' + esc(shortAt(b.at)) + "<\/td>" +
+             '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
+             (blocked ? "해제" : "취소") + "<\/button><\/td><\/tr>";
     }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.<\/td><\/tr>';
+
+    var booked = bookedMap();
+    $("a-slot").innerHTML = SLOTS.filter(function(x){ return !booked[x.id]; })
+      .map(function(x){ return '<option value="' + x.id + '">' + slotLabel(x) + "<\/option>"; }).join("")
+      || '<option value="">남은 시간이 없습니다<\/option>';
+  }
+
+  function shortAt(v){
+    var d = new Date(v);
+    if (isNaN(d.getTime())) return String(v).slice(0, 16).replace("T", " ");
+    var p = function(n){ return (n < 10 ? "0" : "") + n; };
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
   }
 
   function csv(){
-    var head = "날짜,시간,이름,연락처,상담형태,접수시각";
-    var lines = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
+    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각";
+    var lines = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
-      return [s.date, (s.start || "") + "-" + (s.end || ""), b.name, b.phone, TYPES[b.type], b.at].join(",");
+      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at)].join(",");
     });
     return [head].concat(lines).join("\n");
   }
@@ -1487,6 +1934,22 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   }
 
   /* ---------- wiring ---------- */
+
+  $("datebar").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest(".chip[data-date]") : null;
+    if (!btn || btn.disabled) return;
+    selDate = btn.dataset.date;
+    showAll = false;
+    showErr("");
+    render();
+    var now = $("datebar").querySelector('.chip[data-date="' + selDate + '"]');
+    if (now && now.scrollIntoView) now.scrollIntoView({ block:"nearest", inline:"center", behavior:"smooth" });
+  });
+
+  $("alltoggle").addEventListener("click", function(){
+    showAll = !showAll;
+    render();
+  });
 
   $("slotwrap").addEventListener("click", function(e){
     var btn = e.target.closest ? e.target.closest(".slot[data-slot]") : null;
@@ -1509,17 +1972,82 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   $("form").addEventListener("submit", function(e){ e.preventDefault(); submit(); });
 
   $("admin-open").addEventListener("click", function(){
-    if ($("admin-code").value.trim() !== ADMIN_CODE) { $("admin-code").value = ""; $("admin-code").placeholder = "코드가 다릅니다"; return; }
-    $("admin-gate").hidden = true;
-    $("admin-panel").hidden = false;
-    renderAdmin();
+    var code = $("admin-code").value.trim();
+    if (!code) return;
+    $("admin-msg").textContent = "확인 중…";
+    adminKey = code;
+    adminCall("list", {}, function(d){
+      if (!d || !d.ok) {
+        adminKey = null;
+        $("admin-code").value = "";
+        $("admin-msg").textContent = (d && d.error === "network") ? "연결에 실패했습니다" : "코드가 맞지 않습니다";
+        return;
+      }
+      $("admin-msg").textContent = "";
+      $("admin-gate").hidden = true;
+      $("admin-panel").hidden = false;
+      adminRows = d.bookings || [];
+      renderAdmin();
+      adminNote(adminRows.length + "건");
+    });
   });
+
+  $("admin-code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("admin-open").click(); });
+
+  $("admin-refresh").addEventListener("click", function(){
+    adminNote("불러오는 중…");
+    adminCall("list", {}, function(d){ if (adminApply(d)) adminNote(adminRows.length + "건 · 방금 갱신"); });
+  });
+
+  $("admin-rows").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest("[data-cancel]") : null;
+    if (!btn) return;
+    if (btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1";
+      btn.textContent = "한 번 더";
+      setTimeout(function(){ if (btn.dataset.armed === "1") { btn.dataset.armed = ""; renderAdmin(); } }, 4000);
+      return;
+    }
+    var slot = btn.dataset.cancel;
+    adminNote("처리 중…");
+    adminCall("cancel", { slot: slot }, function(d){ adminApply(d, "처리했습니다"); });
+  });
+
+  $("a-add").addEventListener("click", function(){
+    var slot = $("a-slot").value;
+    var name = $("a-name").value.trim();
+    var phone = normPhone($("a-phone").value);
+    if (!slot) { adminNote("남은 시간이 없습니다"); return; }
+    if (name.length < 2) { adminNote("자녀 이름을 적어 주세요"); return; }
+    if (!phone) { adminNote("연락처를 010-1234-5678 형식으로 적어 주세요"); return; }
+    adminNote("등록 중…");
+    var so = slotOf(slot) || {};
+    adminCall("add", { slot: slot, name: name, phone: phone, type: $("a-type").value,
+                       date: so.date ? "2026-" + so.date : "", time: (so.start || "") + "~" + (so.end || "") }, function(d){
+      if (adminApply(d, "등록했습니다")) { $("a-name").value = ""; $("a-phone").value = ""; }
+    });
+  });
+
+  $("a-block").addEventListener("click", function(){
+    var slot = $("a-slot").value;
+    if (!slot) { adminNote("남은 시간이 없습니다"); return; }
+    adminNote("처리 중…");
+    var sb = slotOf(slot) || {};
+    adminCall("block", { slot: slot, date: sb.date ? "2026-" + sb.date : "", time: (sb.start || "") + "~" + (sb.end || "") },
+      function(d){ adminApply(d, "이 시간을 막았습니다"); });
+  });
+
+  $("a-phone").addEventListener("input", function(){
+    var d = this.value.replace(/[^0-9]/g, "").slice(0, 11);
+    this.value = d.length > 7 ? d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7)
+               : d.length > 3 ? d.slice(0,3) + "-" + d.slice(3) : d;
+  });
+
   $("copy-csv").addEventListener("click", function(){
     var text = csv();
-    var note = $("copy-note");
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function(){ note.textContent = "복사했습니다"; })["catch"](function(){ note.textContent = "복사 실패 — 표를 직접 선택해 주세요"; });
-    } else { note.textContent = "이 브라우저에서는 표를 직접 선택해 주세요"; }
+      navigator.clipboard.writeText(text).then(function(){ adminNote("CSV를 복사했습니다"); })["catch"](function(){ adminNote("복사 실패 — 표를 직접 선택해 주세요"); });
+    } else { adminNote("이 브라우저에서는 표를 직접 선택해 주세요"); }
   });
 
   /* boot */
