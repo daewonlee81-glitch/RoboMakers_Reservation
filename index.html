@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--HEAD-->
+<title>로보메이커스 상담예약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EDF0F1;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8F8;
+  --ink:#15242C;
+  --muted:#5A6E78;
+  --faint:#8698A0;
+  --line:#D3DCDF;
+  --line-strong:#B9C6CB;
+  --accent:#0B7A72;
+  --accent-ink:#06514B;
+  --accent-wash:#E2F0EE;
+  --amber:#B4761A;
+  --amber-wash:#F6EEDF;
+  --danger:#A5402F;
+  --shadow:0 1px 2px rgba(21,36,44,.06), 0 8px 24px -16px rgba(21,36,44,.35);
+  --radius:10px;
+  --logo:url("data:image/png;base64,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");
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E181C;
+    --surface:#16242A;
+    --surface-2:#1C2E35;
+    --ink:#E7EEF0;
+    --muted:#9BAFB6;
+    --faint:#6F868E;
+    --line:#26383F;
+    --line-strong:#354B53;
+    --accent:#3FBFAE;
+    --accent-ink:#AEEDE3;
+    --accent-wash:#123833;
+    --amber:#DFA85C;
+    --amber-wash:#2E2517;
+    --danger:#E28777;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -18px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E181C;
+  --surface:#16242A;
+  --surface-2:#1C2E35;
+  --ink:#E7EEF0;
+  --muted:#9BAFB6;
+  --faint:#6F868E;
+  --line:#26383F;
+  --line-strong:#354B53;
+  --accent:#3FBFAE;
+  --accent-ink:#AEEDE3;
+  --accent-wash:#123833;
+  --amber:#DFA85C;
+  --amber-wash:#2E2517;
+  --danger:#E28777;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -18px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  font-weight:400;
+  font-size:15px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+.page{max-width:720px;margin:0 auto;padding:28px 18px 132px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:"Gothic A1","Apple SD Gothic Neo",system-ui,sans-serif;margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+/* masthead */
+.masthead{display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.logo{background-image:var(--logo);background-size:contain;background-repeat:no-repeat;background-position:center;flex:none;display:block;width:44px;height:54px}
+.logo.sm{width:25px;height:31px}
+.brand{display:flex;gap:14px;align-items:center}
+.brand-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.masthead h1{font-size:clamp(27px,7vw,36px);font-weight:900;line-height:1.2}
+.lede{color:var(--muted);font-size:14.5px;max-width:56ch}
+.agenda{margin:6px 0 0;padding:14px 16px;display:flex;flex-direction:column;gap:9px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:var(--radius);box-shadow:var(--shadow)}
+.agenda .cap{font-size:11.5px;letter-spacing:.1em;color:var(--amber);font-weight:600}
+.agenda ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.agenda li{display:flex;gap:10px;align-items:baseline;font-size:14px}
+.agenda li::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--amber);transform:translateY(-3px)}
+
+/* status strip */
+.strip{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:11px 15px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);font-size:13px;color:var(--muted)}
+.strip b{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.strip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.strip .sep{flex:1}
+.mode-note{font-size:12px;color:var(--amber);display:flex;gap:7px;align-items:flex-start;width:100%}
+
+/* steps */
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.step-head{display:flex;gap:12px;align-items:baseline;padding:16px 16px 0}
+.step-num{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-wash);border-radius:5px;padding:2px 7px;flex:none;letter-spacing:.05em}
+.step-head h2{font-size:17px;font-weight:700}
+.step-head .hint{font-size:12.5px;color:var(--faint);margin-left:auto;text-align:right}
+.step-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:14px}
+
+label.field{display:flex;flex-direction:column;gap:6px}
+label.field > span{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+input[type="text"],input[type="tel"],input[type="password"]{
+  font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;
+  transition:border-color .15s ease, background .15s ease;
+}
+input::placeholder{color:var(--faint)}
+input:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
+.two-col{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:560px){.two-col{grid-template-columns:1fr 1fr}}
+
+/* consult type */
+.types{display:grid;grid-template-columns:1fr;gap:9px}
+@media (min-width:560px){.types{grid-template-columns:repeat(3,1fr)}}
+.type{position:relative;display:flex;flex-direction:column;gap:3px;padding:13px 14px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.type input{position:absolute;opacity:0;pointer-events:none}
+.type .t-name{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.type .t-name::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line-strong);flex:none;transition:border-color .15s ease,box-shadow .15s ease}
+.type .t-sub{font-size:12px;color:var(--faint);padding-left:22px}
+.type:hover{border-color:var(--accent)}
+.type:has(input:checked){border-color:var(--accent);background:var(--accent-wash)}
+.type:has(input:checked) .t-name::before{border-color:var(--accent);box-shadow:inset 0 0 0 3.5px var(--accent)}
+.type:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-wash)}
+
+/* slots */
+.daygroup{display:flex;flex-direction:column;gap:9px}
+.daybar{display:flex;align-items:baseline;gap:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.daybar .date{font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px}
+.daybar .dow{font-size:12px;color:var(--faint)}
+.daybar .left{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
+.daybar .left.none{color:var(--faint)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
+.slot{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+.slot .time{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
+.slot .tag{font-size:11px;color:var(--faint);letter-spacing:.02em}
+.slot:hover:not(:disabled){border-color:var(--accent)}
+.slot:active:not(:disabled){transform:scale(.985)}
+.slot:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-color:var(--accent)}
+.slot[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.slot[aria-pressed="true"] .tag{color:rgba(255,255,255,.85)}
+.slot:disabled{cursor:not-allowed;background:transparent;border-style:dashed;border-color:var(--line);color:var(--faint)}
+.slot:disabled .time{text-decoration:line-through;text-decoration-thickness:1px}
+.daygroup.full .slots{opacity:.72}
+
+/* submit bar */
+.submitbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 22px -18px rgba(0,0,0,.7)}
+.submitbar .inner{max-width:720px;margin:0 auto;padding:11px 18px calc(11px + env(safe-area-inset-bottom));display:flex;gap:12px;align-items:center}
+.summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.summary .s1{font-size:12px;color:var(--faint)}
+.summary .s2{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
+button.primary:hover:not(:disabled){opacity:.9}
+button.primary:disabled{opacity:.42;cursor:not-allowed}
+button.primary:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+button.ghost{font:inherit;font-size:13px;padding:8px 14px;border-radius:7px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer}
+button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* messages */
+.msg{padding:11px 14px;border-radius:8px;font-size:13.5px;display:flex;gap:9px;align-items:flex-start}
+.msg.err{background:var(--surface);border:1px solid var(--danger);color:var(--danger)}
+.msg.warn{background:var(--amber-wash);border:1px solid var(--amber);color:var(--amber)}
+.msg:empty{display:none}
+
+/* done card */
+.done{background:var(--surface);border:1px solid var(--accent);border-top:4px solid var(--accent);border-radius:var(--radius);padding:22px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
+.done h2{font-size:20px;font-weight:900}
+.done .rows{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.done .row{display:flex;gap:14px;padding:10px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.done .row .k{width:74px;flex:none;color:var(--muted);font-size:12.5px;padding-top:2px}
+.done .row .v{font-weight:500}
+.done .note{font-size:12.5px;color:var(--muted)}
+
+/* admin */
+.admin{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:0 15px}
+.admin summary{cursor:pointer;padding:13px 0;font-size:13px;color:var(--muted);list-style:none}
+.admin summary::-webkit-details-marker{display:none}
+.admin summary::before{content:"▸ ";color:var(--faint)}
+.admin[open] summary::before{content:"▾ "}
+.admin .abody{padding:2px 0 16px;display:flex;flex-direction:column;gap:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--surface-2);font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.arow{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+
+footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+</style>
+<!--/HEAD-->
+</head>
+<body>
+<!--BODY-->
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand">
+      <span class="logo" role="img" aria-label="로보메이커스 학원 로고"></span>
+      <div class="brand-txt">
+        <p class="eyebrow">로보메이커스 학원</p>
+        <h1>학부모 상담 예약</h1>
+      </div>
+    </div>
+    <p class="lede">자녀의 학습 상황을 함께 살펴보는 정기 상담입니다. 아래에서 편한 시간을 골라 예약해 주세요. 한 번 예약된 시간은 다른 분에게 바로 마감으로 표시됩니다.</p>
+    <div class="agenda">
+      <p class="cap">상담에서 나눌 이야기</p>
+      <ul>
+        <li>현재 배우고 있는 내용</li>
+        <li>앞으로 배울 내용</li>
+        <li>2027년도 행사 일정 안내</li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="strip">
+    <span class="dot" aria-hidden="true"></span>
+    <span>남은 자리 <b id="stat-open">–</b></span>
+    <span>전체 <b id="stat-total">–</b></span>
+    <span class="sep"></span>
+    <span class="mono" id="stat-book">예약 –건</span>
+    <p class="mode-note" id="mode-note" hidden></p>
+  </div>
+
+  <div id="app">
+
+    <form id="form" novalidate>
+      <div style="display:flex;flex-direction:column;gap:22px">
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">01</span>
+            <h2>자녀 이름과 연락처</h2>
+          </div>
+          <div class="step-body">
+            <div class="two-col">
+              <label class="field">
+                <span>자녀 이름</span>
+                <input type="text" id="f-name" autocomplete="off" placeholder="예: 김로보" maxlength="20">
+              </label>
+              <label class="field">
+                <span>보호자 연락처</span>
+                <input type="tel" id="f-phone" autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" maxlength="13">
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">02</span>
+            <h2>상담 형태</h2>
+          </div>
+          <div class="step-body">
+            <div class="types">
+              <label class="type">
+                <input type="radio" name="ctype" value="zoom">
+                <span class="t-name">줌 온라인</span>
+                <span class="t-sub">참여 링크를 문자로 보내드립니다</span>
+              </label>
+              <label class="type">
+                <input type="radio" name="ctype" value="phone">
+                <span class="t-name">전화</span>
+                <span class="t-sub">적어주신 번호로 전화드립니다</span>
+              </label>
+              <label class="type">
+                <input type="radio" name="ctype" value="visit">
+                <span class="t-name">대면</span>
+                <span class="t-sub">학원으로 방문해 주세요</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">03</span>
+            <h2>상담 일시</h2>
+            <span class="hint">회당 60분</span>
+          </div>
+          <div class="step-body">
+            <div id="slotwrap" style="display:flex;flex-direction:column;gap:20px"></div>
+          </div>
+        </section>
+
+        <p class="msg err" id="err" role="alert"></p>
+      </div>
+    </form>
+
+    <div class="submitbar">
+      <div class="inner">
+        <div class="summary">
+          <span class="s1" id="sum-1">시간을 선택해 주세요</span>
+          <span class="s2" id="sum-2">—</span>
+        </div>
+        <button type="button" class="primary" id="submit" disabled>예약하기</button>
+      </div>
+    </div>
+
+  </div>
+
+  <details class="admin" id="admin">
+    <summary>원장님 확인용 · 예약 내역</summary>
+    <div class="abody">
+      <div class="arow" id="admin-gate">
+        <input type="password" id="admin-code" placeholder="확인 코드" style="max-width:150px" autocomplete="off">
+        <button type="button" class="ghost" id="admin-open">열기</button>
+      </div>
+      <div id="admin-panel" hidden>
+        <div class="tablewrap"><table>
+          <thead><tr><th>날짜</th><th>시간</th><th>이름</th><th>연락처</th><th>형태</th><th>접수</th><th></th></tr></thead>
+          <tbody id="admin-rows"></tbody>
+        </table></div>
+        <div class="arow" style="margin-top:12px">
+          <button type="button" class="ghost" id="copy-csv">CSV 복사</button>
+          <span class="mono" style="font-size:12px;color:var(--faint)" id="copy-note"></span>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <footer class="foot">로보메이커스 학원 · 상담 문의는 학원으로 연락 주세요</footer>
+</div>
+
+<script id="app-state" type="application/json">{"bookings": []}</script>
+<script>
+(function(){
+  "use strict";
+
+  function $(id){ return document.getElementById(id); }
+
+  var ADMIN_CODE = "2027";
+
+  var SLOTS = [
+    ["09-21","월","10:00","11:00"],["09-21","월","11:00","12:00"],["09-21","월","13:30","14:30"],["09-21","월","20:00","21:00"],["09-21","월","21:00","22:00"],
+    ["09-22","화","10:00","11:00"],["09-22","화","11:00","12:00"],["09-22","화","13:30","14:30"],["09-22","화","20:40","21:40"],
+    ["09-23","수","10:00","11:00"],["09-23","수","11:00","12:00"],["09-23","수","13:30","14:30"],
+    ["09-29","화","10:00","11:00"],["09-29","화","11:00","12:00"],["09-29","화","13:30","14:30"],["09-29","화","20:40","21:40"],
+    ["09-30","수","10:00","11:00"],["09-30","수","11:00","12:00"],["09-30","수","13:30","14:30"],
+    ["10-07","수","10:00","11:00"],["10-07","수","11:00","12:00"],["10-07","수","13:30","14:30"],
+    ["10-08","목","10:00","11:00"],["10-08","목","11:00","12:00"],["10-08","목","13:30","14:30"],["10-08","목","20:00","21:00"],["10-08","목","21:00","22:00"],
+    ["10-12","월","10:00","11:00"],["10-12","월","11:00","12:00"],["10-12","월","13:30","14:30"],["10-12","월","20:00","21:00"],["10-12","월","21:00","22:00"],
+    ["10-13","화","10:00","11:00"],["10-13","화","11:00","12:00"],["10-13","화","13:30","14:30"],["10-13","화","20:40","21:40"],
+    ["10-14","수","10:00","11:00"],["10-14","수","11:00","12:00"],["10-14","수","13:30","14:30"],
+    ["10-15","목","10:00","11:00"],["10-15","목","11:00","12:00"],["10-15","목","13:30","14:30"],["10-15","목","20:00","21:00"],["10-15","목","21:00","22:00"],
+    ["10-16","금","10:00","11:00"],["10-16","금","11:00","12:00"],["10-16","금","13:30","14:30"]
+  ].map(function(r){
+    return { id: r[0].replace("-","") + "-" + r[2].replace(":",""), date:r[0], dow:r[1], start:r[2], end:r[3] };
+  });
+
+  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면" };
+  var LOCAL_KEY = "robomakers-booking-v1";
+
+  var state = readState();
+  var api = null;          // artifact capability namespace
+  var mode = "local";      // "shared" | "local" | "readonly"
+  var sel = { slot:null };
+  var busy = false;
+
+
+  function readState(){
+    var s = { bookings: [] };
+    try {
+      var raw = $("app-state").textContent;
+      var p = JSON.parse(raw);
+      if (p && Array.isArray(p.bookings)) s.bookings = p.bookings;
+    } catch(e){}
+    return s;
+  }
+
+  function localOverlay(){
+    try {
+      var raw = window.localStorage.getItem(LOCAL_KEY);
+      if (!raw) return;
+      var p = JSON.parse(raw);
+      if (!p || !Array.isArray(p.bookings)) return;
+      var seen = {};
+      state.bookings.forEach(function(b){ seen[b.slot] = 1; });
+      p.bookings.forEach(function(b){ if (!seen[b.slot]) { state.bookings.push(b); seen[b.slot] = 1; } });
+    } catch(e){}
+  }
+
+  function saveLocal(){
+    try { window.localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch(e){}
+  }
+
+  function bookedMap(){
+    var m = {};
+    state.bookings.forEach(function(b){ m[b.slot] = b; });
+    return m;
+  }
+
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  function maskName(n){
+    n = String(n || "");
+    if (n.length <= 1) return n;
+    if (n.length === 2) return n[0] + "*";
+    return n[0] + new Array(n.length - 1).join("*") + n[n.length - 1];
+  }
+
+  function normPhone(v){
+    var d = String(v || "").replace(/[^0-9]/g, "");
+    if (d.length === 11) return d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7);
+    if (d.length === 10) return d.slice(0,3) + "-" + d.slice(3,6) + "-" + d.slice(6);
+    return "";
+  }
+
+  function slotLabel(s){
+    return s.date.replace("-", "월 ") + "일(" + s.dow + ") " + s.start + "~" + s.end;
+  }
+
+  /* ---------- rendering ---------- */
+
+  function renderSlots(){
+    var booked = bookedMap();
+    var days = [];
+    var index = {};
+    SLOTS.forEach(function(s){
+      if (!index[s.date]) { index[s.date] = { date:s.date, dow:s.dow, items:[] }; days.push(index[s.date]); }
+      index[s.date].items.push(s);
+    });
+
+    var html = days.map(function(d){
+      var open = d.items.filter(function(s){ return !booked[s.id]; }).length;
+      var rows = d.items.map(function(s){
+        var b = booked[s.id];
+        if (b) {
+          return '<button type="button" class="slot" disabled aria-disabled="true">' +
+                 '<span class="time">' + s.start + ' ~ ' + s.end + '</span>' +
+                 '<span class="tag">예약 마감 · ' + esc(maskName(b.name)) + '</span></button>';
+        }
+        var on = sel.slot === s.id;
+        return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+               '<span class="time">' + s.start + ' ~ ' + s.end + '</span>' +
+               '<span class="tag">' + (on ? "선택함" : "예약 가능") + '</span></button>';
+      }).join("");
+      return '<div class="daygroup' + (open === 0 ? " full" : "") + '">' +
+             '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일</span>' +
+             '<span class="dow">' + d.dow + '요일</span>' +
+             '<span class="left' + (open === 0 ? " none" : "") + '">' + (open === 0 ? "전부 마감" : open + "자리 남음") + '</span></div>' +
+             '<div class="slots">' + rows + '</div></div>';
+    }).join("");
+
+    $("slotwrap").innerHTML = html;
+  }
+
+  function renderStats(){
+    var n = state.bookings.length;
+    $("stat-total").textContent = SLOTS.length;
+    $("stat-open").textContent = SLOTS.length - n;
+    $("stat-book").textContent = "예약 " + n + "건";
+  }
+
+  function renderSummary(){
+    var s = SLOTS.filter(function(x){ return x.id === sel.slot; })[0];
+    var name = $("f-name").value.trim();
+    var t = document.querySelector('input[name="ctype"]:checked');
+    if (!s) {
+      $("sum-1").textContent = "시간을 선택해 주세요";
+      $("sum-2").textContent = "—";
+    } else {
+      $("sum-1").textContent = (name || "자녀 이름") + " · " + (t ? TYPES[t.value] : "상담 형태 미선택");
+      $("sum-2").textContent = slotLabel(s);
+    }
+    $("submit").disabled = busy || !s || mode === "readonly";
+  }
+
+  function render(){ renderSlots(); renderStats(); renderSummary(); }
+
+  /* ---------- validation & submit ---------- */
+
+  function validate(){
+    var name = $("f-name").value.trim();
+    var phone = normPhone($("f-phone").value);
+    var t = document.querySelector('input[name="ctype"]:checked');
+    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요." };
+    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요." };
+    if (!t) return { err:"상담 형태를 선택해 주세요." };
+    if (!sel.slot) return { err:"상담 일시를 선택해 주세요." };
+    if (bookedMap()[sel.slot]) return { err:"방금 다른 분이 이 시간을 예약했습니다. 다른 시간을 선택해 주세요." };
+    return { ok:{ id: String(Date.now()) + "-" + Math.random().toString(36).slice(2,7), slot: sel.slot, name: name, phone: phone, type: t.value, at: new Date().toISOString() } };
+  }
+
+  function showErr(m){ $("err").textContent = m || ""; }
+
+  function stash(){
+    try {
+      window.sessionStorage.setItem("robomakers-draft", JSON.stringify({
+        name: $("f-name").value, phone: $("f-phone").value,
+        type: (document.querySelector('input[name="ctype"]:checked') || {}).value || "",
+        slot: sel.slot
+      }));
+    } catch(e){}
+  }
+
+  function unstash(){
+    try {
+      var raw = window.sessionStorage.getItem("robomakers-draft");
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      window.sessionStorage.removeItem("robomakers-draft");
+      if (d.name) $("f-name").value = d.name;
+      if (d.phone) $("f-phone").value = d.phone;
+      if (d.type) { var r = document.querySelector('input[name="ctype"][value="' + d.type + '"]'); if (r) r.checked = true; }
+      if (d.slot && !bookedMap()[d.slot]) sel.slot = d.slot;
+    } catch(e){}
+  }
+
+  function submit(){
+    if (busy) return;
+    showErr("");
+    var v = validate();
+    if (v.err) { showErr(v.err); render(); return; }
+
+    var dupe = state.bookings.filter(function(b){ return b.name === v.ok.name; })[0];
+    if (dupe && !$("submit").dataset.confirmed) {
+      $("submit").dataset.confirmed = "1";
+      $("submit").textContent = "그래도 예약하기";
+      showErr(v.ok.name + " 이름으로 이미 " + slotLabel(SLOTS.filter(function(s){ return s.id === dupe.slot; })[0]) + " 예약이 있습니다. 추가로 예약하시려면 한 번 더 눌러 주세요.");
+      return;
+    }
+
+    busy = true;
+    $("submit").disabled = true;
+    $("submit").textContent = "저장하는 중…";
+
+    var next = { bookings: state.bookings.concat([v.ok]) };
+
+    if (mode === "shared" && api) {
+      stash();
+      api.publish(buildDoc(next)).then(function(){
+        // the view reloads to the new version
+      })["catch"](function(e){
+        busy = false;
+        $("submit").disabled = false;
+        $("submit").textContent = "예약하기";
+        var code = (e && e.code) || "upstream_error";
+        if (code === "conflict") {
+          showErr("같은 순간에 다른 분이 예약했습니다. 화면이 새로고침되면 남은 시간을 다시 선택해 주세요.");
+        } else if (code === "not_writer" || code === "not_granted" || code === "not_declared" || code === "consent_required") {
+          mode = "readonly";
+          setModeNote("이 링크는 읽기 전용입니다. 예약이 가능한 링크를 학원에 요청해 주세요.");
+          showErr("이 링크에서는 예약을 저장할 수 없습니다.");
+        } else if (code === "rate_limited") {
+          showErr("잠시 뒤 다시 눌러 주세요.");
+        } else {
+          showErr("저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+        }
+        render();
+      });
+    } else {
+      state = next;
+      saveLocal();
+      busy = false;
+      done(v.ok);
+    }
+  }
+
+  function done(b){
+    var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0];
+    $("app").innerHTML =
+      '<div class="done">' +
+      '<div style="display:flex;gap:11px;align-items:center">' +
+      '<span class="logo sm" role="img" aria-label="로보메이커스 학원 로고"></span>' +
+      '<h2>예약이 접수되었습니다</h2></div>' +
+      '<div class="rows">' +
+      '<div class="row"><span class="k">자녀</span><span class="v">' + esc(b.name) + '</span></div>' +
+      '<div class="row"><span class="k">일시</span><span class="v mono">' + slotLabel(s) + '</span></div>' +
+      '<div class="row"><span class="k">형태</span><span class="v">' + TYPES[b.type] + '</span></div>' +
+      '<div class="row"><span class="k">연락처</span><span class="v mono">' + esc(b.phone) + '</span></div>' +
+      '</div>' +
+      '<p class="note">상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.</p>' +
+      '<div><button type="button" class="ghost" id="again">다른 자녀 예약하기</button></div>' +
+      '</div>';
+    var again = $("again");
+    if (again) again.addEventListener("click", function(){ window.location.reload(); });
+    renderStats();
+  }
+
+  /* ---------- self-publishing document ---------- */
+
+  function template(){
+    return $("page-src").textContent.split("<\\/").join("</");
+  }
+
+  function buildDoc(next){
+    var tpl = template();
+    var kState = "__STATE" + "_JSON__";
+    var kTpl = "__TEMPLATE" + "_SRC__";
+    var json = JSON.stringify(next).replace(/</g, "\\u003c");
+    return tpl.replace(kState, function(){ return json; })
+              .replace(kTpl, function(){ return tpl.split("</").join("<\\/"); });
+  }
+
+  /* ---------- admin ---------- */
+
+  function renderAdmin(){
+    var rows = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+    $("admin-rows").innerHTML = rows.length ? rows.map(function(b){
+      var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || { date:"?", dow:"?", start:"?", end:"?" };
+      return "<tr><td class=\"mono\">" + s.date.replace("-", "/") + "(" + s.dow + ")</td>" +
+             "<td class=\"mono\">" + s.start + "~" + s.end + "</td>" +
+             "<td>" + esc(b.name) + "</td>" +
+             "<td class=\"mono\">" + esc(b.phone) + "</td>" +
+             "<td>" + TYPES[b.type] + "</td>" +
+             "<td class=\"mono\">" + esc(String(b.at).slice(5,16).replace("T", " ")) + "</td><td></td></tr>";
+    }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.</td></tr>';
+  }
+
+  function csv(){
+    var head = "날짜,시간,이름,연락처,상담형태,접수시각";
+    var lines = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
+      var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
+      return [s.date, (s.start || "") + "-" + (s.end || ""), b.name, b.phone, TYPES[b.type], b.at].join(",");
+    });
+    return [head].concat(lines).join("\n");
+  }
+
+  function setModeNote(text){
+    var el = $("mode-note");
+    if (!text) { el.hidden = true; el.textContent = ""; return; }
+    el.hidden = false;
+    el.textContent = text;
+  }
+
+  /* ---------- wiring ---------- */
+
+  $("slotwrap").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest(".slot[data-slot]") : null;
+    if (!btn) return;
+    sel.slot = (sel.slot === btn.dataset.slot) ? null : btn.dataset.slot;
+    showErr("");
+    render();
+  });
+
+  $("f-name").addEventListener("input", renderSummary);
+  $("f-phone").addEventListener("input", function(){
+    var d = this.value.replace(/[^0-9]/g, "").slice(0, 11);
+    this.value = d.length > 7 ? d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7)
+               : d.length > 3 ? d.slice(0,3) + "-" + d.slice(3) : d;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ctype"]'), function(r){
+    r.addEventListener("change", renderSummary);
+  });
+  $("submit").addEventListener("click", submit);
+  $("form").addEventListener("submit", function(e){ e.preventDefault(); submit(); });
+
+  $("admin-open").addEventListener("click", function(){
+    if ($("admin-code").value.trim() !== ADMIN_CODE) { $("admin-code").value = ""; $("admin-code").placeholder = "코드가 다릅니다"; return; }
+    $("admin-gate").hidden = true;
+    $("admin-panel").hidden = false;
+    renderAdmin();
+  });
+  $("copy-csv").addEventListener("click", function(){
+    var text = csv();
+    var note = $("copy-note");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ note.textContent = "복사했습니다"; })["catch"](function(){ note.textContent = "복사 실패 — 표를 직접 선택해 주세요"; });
+    } else { note.textContent = "이 브라우저에서는 표를 직접 선택해 주세요"; }
+  });
+
+  /* boot */
+  render();
+
+  if (window.claude && typeof window.claude.use === "function") {
+    setModeNote("공유 저장소를 연결하는 중입니다…");
+    window.claude.use("artifact").then(function(ns){
+      if (ns) {
+        api = ns;
+        mode = "shared";
+        setModeNote("");
+      } else {
+        mode = "local";
+        localOverlay();
+        setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
+      }
+      unstash();
+      render();
+    })["catch"](function(){
+      mode = "local";
+      localOverlay();
+      setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
+      render();
+    });
+  } else {
+    mode = "local";
+    localOverlay();
+    setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
+    unstash();
+    render();
+  }
+})();
+</script>
+<script id="page-src" type="text/plain"><!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--HEAD-->
+<title>로보메이커스 상담예약<\/title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EDF0F1;
+  --surface:#FFFFFF;
+  --surface-2:#F6F8F8;
+  --ink:#15242C;
+  --muted:#5A6E78;
+  --faint:#8698A0;
+  --line:#D3DCDF;
+  --line-strong:#B9C6CB;
+  --accent:#0B7A72;
+  --accent-ink:#06514B;
+  --accent-wash:#E2F0EE;
+  --amber:#B4761A;
+  --amber-wash:#F6EEDF;
+  --danger:#A5402F;
+  --shadow:0 1px 2px rgba(21,36,44,.06), 0 8px 24px -16px rgba(21,36,44,.35);
+  --radius:10px;
+  --logo:url("data:image/png;base64,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");
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E181C;
+    --surface:#16242A;
+    --surface-2:#1C2E35;
+    --ink:#E7EEF0;
+    --muted:#9BAFB6;
+    --faint:#6F868E;
+    --line:#26383F;
+    --line-strong:#354B53;
+    --accent:#3FBFAE;
+    --accent-ink:#AEEDE3;
+    --accent-wash:#123833;
+    --amber:#DFA85C;
+    --amber-wash:#2E2517;
+    --danger:#E28777;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -18px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E181C;
+  --surface:#16242A;
+  --surface-2:#1C2E35;
+  --ink:#E7EEF0;
+  --muted:#9BAFB6;
+  --faint:#6F868E;
+  --line:#26383F;
+  --line-strong:#354B53;
+  --accent:#3FBFAE;
+  --accent-ink:#AEEDE3;
+  --accent-wash:#123833;
+  --amber:#DFA85C;
+  --amber-wash:#2E2517;
+  --danger:#E28777;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -18px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  font-weight:400;
+  font-size:15px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+.page{max-width:720px;margin:0 auto;padding:28px 18px 132px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:"Gothic A1","Apple SD Gothic Neo",system-ui,sans-serif;margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+/* masthead */
+.masthead{display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.logo{background-image:var(--logo);background-size:contain;background-repeat:no-repeat;background-position:center;flex:none;display:block;width:44px;height:54px}
+.logo.sm{width:25px;height:31px}
+.brand{display:flex;gap:14px;align-items:center}
+.brand-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.masthead h1{font-size:clamp(27px,7vw,36px);font-weight:900;line-height:1.2}
+.lede{color:var(--muted);font-size:14.5px;max-width:56ch}
+.agenda{margin:6px 0 0;padding:14px 16px;display:flex;flex-direction:column;gap:9px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:var(--radius);box-shadow:var(--shadow)}
+.agenda .cap{font-size:11.5px;letter-spacing:.1em;color:var(--amber);font-weight:600}
+.agenda ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.agenda li{display:flex;gap:10px;align-items:baseline;font-size:14px}
+.agenda li::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--amber);transform:translateY(-3px)}
+
+/* status strip */
+.strip{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:11px 15px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);font-size:13px;color:var(--muted)}
+.strip b{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.strip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.strip .sep{flex:1}
+.mode-note{font-size:12px;color:var(--amber);display:flex;gap:7px;align-items:flex-start;width:100%}
+
+/* steps */
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.step-head{display:flex;gap:12px;align-items:baseline;padding:16px 16px 0}
+.step-num{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-wash);border-radius:5px;padding:2px 7px;flex:none;letter-spacing:.05em}
+.step-head h2{font-size:17px;font-weight:700}
+.step-head .hint{font-size:12.5px;color:var(--faint);margin-left:auto;text-align:right}
+.step-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:14px}
+
+label.field{display:flex;flex-direction:column;gap:6px}
+label.field > span{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em}
+input[type="text"],input[type="tel"],input[type="password"]{
+  font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;
+  transition:border-color .15s ease, background .15s ease;
+}
+input::placeholder{color:var(--faint)}
+input:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+input:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
+.two-col{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:560px){.two-col{grid-template-columns:1fr 1fr}}
+
+/* consult type */
+.types{display:grid;grid-template-columns:1fr;gap:9px}
+@media (min-width:560px){.types{grid-template-columns:repeat(3,1fr)}}
+.type{position:relative;display:flex;flex-direction:column;gap:3px;padding:13px 14px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.type input{position:absolute;opacity:0;pointer-events:none}
+.type .t-name{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.type .t-name::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line-strong);flex:none;transition:border-color .15s ease,box-shadow .15s ease}
+.type .t-sub{font-size:12px;color:var(--faint);padding-left:22px}
+.type:hover{border-color:var(--accent)}
+.type:has(input:checked){border-color:var(--accent);background:var(--accent-wash)}
+.type:has(input:checked) .t-name::before{border-color:var(--accent);box-shadow:inset 0 0 0 3.5px var(--accent)}
+.type:has(input:focus-visible){box-shadow:0 0 0 3px var(--accent-wash)}
+
+/* slots */
+.daygroup{display:flex;flex-direction:column;gap:9px}
+.daybar{display:flex;align-items:baseline;gap:9px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.daybar .date{font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px}
+.daybar .dow{font-size:12px;color:var(--faint)}
+.daybar .left{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted)}
+.daybar .left.none{color:var(--faint)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
+.slot{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 11px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+.slot .time{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}
+.slot .tag{font-size:11px;color:var(--faint);letter-spacing:.02em}
+.slot:hover:not(:disabled){border-color:var(--accent)}
+.slot:active:not(:disabled){transform:scale(.985)}
+.slot:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash);border-color:var(--accent)}
+.slot[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.slot[aria-pressed="true"] .tag{color:rgba(255,255,255,.85)}
+.slot:disabled{cursor:not-allowed;background:transparent;border-style:dashed;border-color:var(--line);color:var(--faint)}
+.slot:disabled .time{text-decoration:line-through;text-decoration-thickness:1px}
+.daygroup.full .slots{opacity:.72}
+
+/* submit bar */
+.submitbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 22px -18px rgba(0,0,0,.7)}
+.submitbar .inner{max-width:720px;margin:0 auto;padding:11px 18px calc(11px + env(safe-area-inset-bottom));display:flex;gap:12px;align-items:center}
+.summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.summary .s1{font-size:12px;color:var(--faint)}
+.summary .s2{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+button.primary{font:inherit;font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px;padding:12px 22px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;flex:none;transition:opacity .15s ease}
+button.primary:hover:not(:disabled){opacity:.9}
+button.primary:disabled{opacity:.42;cursor:not-allowed}
+button.primary:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+button.ghost{font:inherit;font-size:13px;padding:8px 14px;border-radius:7px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer}
+button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* messages */
+.msg{padding:11px 14px;border-radius:8px;font-size:13.5px;display:flex;gap:9px;align-items:flex-start}
+.msg.err{background:var(--surface);border:1px solid var(--danger);color:var(--danger)}
+.msg.warn{background:var(--amber-wash);border:1px solid var(--amber);color:var(--amber)}
+.msg:empty{display:none}
+
+/* done card */
+.done{background:var(--surface);border:1px solid var(--accent);border-top:4px solid var(--accent);border-radius:var(--radius);padding:22px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
+.done h2{font-size:20px;font-weight:900}
+.done .rows{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.done .row{display:flex;gap:14px;padding:10px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.done .row .k{width:74px;flex:none;color:var(--muted);font-size:12.5px;padding-top:2px}
+.done .row .v{font-weight:500}
+.done .note{font-size:12.5px;color:var(--muted)}
+
+/* admin */
+.admin{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:0 15px}
+.admin summary{cursor:pointer;padding:13px 0;font-size:13px;color:var(--muted);list-style:none}
+.admin summary::-webkit-details-marker{display:none}
+.admin summary::before{content:"▸ ";color:var(--faint)}
+.admin[open] summary::before{content:"▾ "}
+.admin .abody{padding:2px 0 16px;display:flex;flex-direction:column;gap:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--surface-2);font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.arow{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+
+footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+<\/style>
+<!--/HEAD-->
+<\/head>
+<body>
+<!--BODY-->
+<div class="page">
+
+  <header class="masthead">
+    <div class="brand">
+      <span class="logo" role="img" aria-label="로보메이커스 학원 로고"><\/span>
+      <div class="brand-txt">
+        <p class="eyebrow">로보메이커스 학원<\/p>
+        <h1>학부모 상담 예약<\/h1>
+      <\/div>
+    <\/div>
+    <p class="lede">자녀의 학습 상황을 함께 살펴보는 정기 상담입니다. 아래에서 편한 시간을 골라 예약해 주세요. 한 번 예약된 시간은 다른 분에게 바로 마감으로 표시됩니다.<\/p>
+    <div class="agenda">
+      <p class="cap">상담에서 나눌 이야기<\/p>
+      <ul>
+        <li>현재 배우고 있는 내용<\/li>
+        <li>앞으로 배울 내용<\/li>
+        <li>2027년도 행사 일정 안내<\/li>
+      <\/ul>
+    <\/div>
+  <\/header>
+
+  <div class="strip">
+    <span class="dot" aria-hidden="true"><\/span>
+    <span>남은 자리 <b id="stat-open">–<\/b><\/span>
+    <span>전체 <b id="stat-total">–<\/b><\/span>
+    <span class="sep"><\/span>
+    <span class="mono" id="stat-book">예약 –건<\/span>
+    <p class="mode-note" id="mode-note" hidden><\/p>
+  <\/div>
+
+  <div id="app">
+
+    <form id="form" novalidate>
+      <div style="display:flex;flex-direction:column;gap:22px">
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">01<\/span>
+            <h2>자녀 이름과 연락처<\/h2>
+          <\/div>
+          <div class="step-body">
+            <div class="two-col">
+              <label class="field">
+                <span>자녀 이름<\/span>
+                <input type="text" id="f-name" autocomplete="off" placeholder="예: 김로보" maxlength="20">
+              <\/label>
+              <label class="field">
+                <span>보호자 연락처<\/span>
+                <input type="tel" id="f-phone" autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" maxlength="13">
+              <\/label>
+            <\/div>
+          <\/div>
+        <\/section>
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">02<\/span>
+            <h2>상담 형태<\/h2>
+          <\/div>
+          <div class="step-body">
+            <div class="types">
+              <label class="type">
+                <input type="radio" name="ctype" value="zoom">
+                <span class="t-name">줌 온라인<\/span>
+                <span class="t-sub">참여 링크를 문자로 보내드립니다<\/span>
+              <\/label>
+              <label class="type">
+                <input type="radio" name="ctype" value="phone">
+                <span class="t-name">전화<\/span>
+                <span class="t-sub">적어주신 번호로 전화드립니다<\/span>
+              <\/label>
+              <label class="type">
+                <input type="radio" name="ctype" value="visit">
+                <span class="t-name">대면<\/span>
+                <span class="t-sub">학원으로 방문해 주세요<\/span>
+              <\/label>
+            <\/div>
+          <\/div>
+        <\/section>
+
+        <section class="step">
+          <div class="step-head">
+            <span class="step-num">03<\/span>
+            <h2>상담 일시<\/h2>
+            <span class="hint">회당 60분<\/span>
+          <\/div>
+          <div class="step-body">
+            <div id="slotwrap" style="display:flex;flex-direction:column;gap:20px"><\/div>
+          <\/div>
+        <\/section>
+
+        <p class="msg err" id="err" role="alert"><\/p>
+      <\/div>
+    <\/form>
+
+    <div class="submitbar">
+      <div class="inner">
+        <div class="summary">
+          <span class="s1" id="sum-1">시간을 선택해 주세요<\/span>
+          <span class="s2" id="sum-2">—<\/span>
+        <\/div>
+        <button type="button" class="primary" id="submit" disabled>예약하기<\/button>
+      <\/div>
+    <\/div>
+
+  <\/div>
+
+  <details class="admin" id="admin">
+    <summary>원장님 확인용 · 예약 내역<\/summary>
+    <div class="abody">
+      <div class="arow" id="admin-gate">
+        <input type="password" id="admin-code" placeholder="확인 코드" style="max-width:150px" autocomplete="off">
+        <button type="button" class="ghost" id="admin-open">열기<\/button>
+      <\/div>
+      <div id="admin-panel" hidden>
+        <div class="tablewrap"><table>
+          <thead><tr><th>날짜<\/th><th>시간<\/th><th>이름<\/th><th>연락처<\/th><th>형태<\/th><th>접수<\/th><th><\/th><\/tr><\/thead>
+          <tbody id="admin-rows"><\/tbody>
+        <\/table><\/div>
+        <div class="arow" style="margin-top:12px">
+          <button type="button" class="ghost" id="copy-csv">CSV 복사<\/button>
+          <span class="mono" style="font-size:12px;color:var(--faint)" id="copy-note"><\/span>
+        <\/div>
+      <\/div>
+    <\/div>
+  <\/details>
+
+  <footer class="foot">로보메이커스 학원 · 상담 문의는 학원으로 연락 주세요<\/footer>
+<\/div>
+
+<script id="app-state" type="application/json">__STATE_JSON__<\/script>
+<script>
+(function(){
+  "use strict";
+
+  function $(id){ return document.getElementById(id); }
+
+  var ADMIN_CODE = "2027";
+
+  var SLOTS = [
+    ["09-21","월","10:00","11:00"],["09-21","월","11:00","12:00"],["09-21","월","13:30","14:30"],["09-21","월","20:00","21:00"],["09-21","월","21:00","22:00"],
+    ["09-22","화","10:00","11:00"],["09-22","화","11:00","12:00"],["09-22","화","13:30","14:30"],["09-22","화","20:40","21:40"],
+    ["09-23","수","10:00","11:00"],["09-23","수","11:00","12:00"],["09-23","수","13:30","14:30"],
+    ["09-29","화","10:00","11:00"],["09-29","화","11:00","12:00"],["09-29","화","13:30","14:30"],["09-29","화","20:40","21:40"],
+    ["09-30","수","10:00","11:00"],["09-30","수","11:00","12:00"],["09-30","수","13:30","14:30"],
+    ["10-07","수","10:00","11:00"],["10-07","수","11:00","12:00"],["10-07","수","13:30","14:30"],
+    ["10-08","목","10:00","11:00"],["10-08","목","11:00","12:00"],["10-08","목","13:30","14:30"],["10-08","목","20:00","21:00"],["10-08","목","21:00","22:00"],
+    ["10-12","월","10:00","11:00"],["10-12","월","11:00","12:00"],["10-12","월","13:30","14:30"],["10-12","월","20:00","21:00"],["10-12","월","21:00","22:00"],
+    ["10-13","화","10:00","11:00"],["10-13","화","11:00","12:00"],["10-13","화","13:30","14:30"],["10-13","화","20:40","21:40"],
+    ["10-14","수","10:00","11:00"],["10-14","수","11:00","12:00"],["10-14","수","13:30","14:30"],
+    ["10-15","목","10:00","11:00"],["10-15","목","11:00","12:00"],["10-15","목","13:30","14:30"],["10-15","목","20:00","21:00"],["10-15","목","21:00","22:00"],
+    ["10-16","금","10:00","11:00"],["10-16","금","11:00","12:00"],["10-16","금","13:30","14:30"]
+  ].map(function(r){
+    return { id: r[0].replace("-","") + "-" + r[2].replace(":",""), date:r[0], dow:r[1], start:r[2], end:r[3] };
+  });
+
+  var TYPES = { zoom:"줌 온라인", phone:"전화", visit:"대면" };
+  var LOCAL_KEY = "robomakers-booking-v1";
+
+  var state = readState();
+  var api = null;          // artifact capability namespace
+  var mode = "local";      // "shared" | "local" | "readonly"
+  var sel = { slot:null };
+  var busy = false;
+
+
+  function readState(){
+    var s = { bookings: [] };
+    try {
+      var raw = $("app-state").textContent;
+      var p = JSON.parse(raw);
+      if (p && Array.isArray(p.bookings)) s.bookings = p.bookings;
+    } catch(e){}
+    return s;
+  }
+
+  function localOverlay(){
+    try {
+      var raw = window.localStorage.getItem(LOCAL_KEY);
+      if (!raw) return;
+      var p = JSON.parse(raw);
+      if (!p || !Array.isArray(p.bookings)) return;
+      var seen = {};
+      state.bookings.forEach(function(b){ seen[b.slot] = 1; });
+      p.bookings.forEach(function(b){ if (!seen[b.slot]) { state.bookings.push(b); seen[b.slot] = 1; } });
+    } catch(e){}
+  }
+
+  function saveLocal(){
+    try { window.localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch(e){}
+  }
+
+  function bookedMap(){
+    var m = {};
+    state.bookings.forEach(function(b){ m[b.slot] = b; });
+    return m;
+  }
+
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/<\/g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  function maskName(n){
+    n = String(n || "");
+    if (n.length <= 1) return n;
+    if (n.length === 2) return n[0] + "*";
+    return n[0] + new Array(n.length - 1).join("*") + n[n.length - 1];
+  }
+
+  function normPhone(v){
+    var d = String(v || "").replace(/[^0-9]/g, "");
+    if (d.length === 11) return d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7);
+    if (d.length === 10) return d.slice(0,3) + "-" + d.slice(3,6) + "-" + d.slice(6);
+    return "";
+  }
+
+  function slotLabel(s){
+    return s.date.replace("-", "월 ") + "일(" + s.dow + ") " + s.start + "~" + s.end;
+  }
+
+  /* ---------- rendering ---------- */
+
+  function renderSlots(){
+    var booked = bookedMap();
+    var days = [];
+    var index = {};
+    SLOTS.forEach(function(s){
+      if (!index[s.date]) { index[s.date] = { date:s.date, dow:s.dow, items:[] }; days.push(index[s.date]); }
+      index[s.date].items.push(s);
+    });
+
+    var html = days.map(function(d){
+      var open = d.items.filter(function(s){ return !booked[s.id]; }).length;
+      var rows = d.items.map(function(s){
+        var b = booked[s.id];
+        if (b) {
+          return '<button type="button" class="slot" disabled aria-disabled="true">' +
+                 '<span class="time">' + s.start + ' ~ ' + s.end + '<\/span>' +
+                 '<span class="tag">예약 마감 · ' + esc(maskName(b.name)) + '<\/span><\/button>';
+        }
+        var on = sel.slot === s.id;
+        return '<button type="button" class="slot" data-slot="' + s.id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+               '<span class="time">' + s.start + ' ~ ' + s.end + '<\/span>' +
+               '<span class="tag">' + (on ? "선택함" : "예약 가능") + '<\/span><\/button>';
+      }).join("");
+      return '<div class="daygroup' + (open === 0 ? " full" : "") + '">' +
+             '<div class="daybar"><span class="date">' + d.date.replace("-", "월 ") + '일<\/span>' +
+             '<span class="dow">' + d.dow + '요일<\/span>' +
+             '<span class="left' + (open === 0 ? " none" : "") + '">' + (open === 0 ? "전부 마감" : open + "자리 남음") + '<\/span><\/div>' +
+             '<div class="slots">' + rows + '<\/div><\/div>';
+    }).join("");
+
+    $("slotwrap").innerHTML = html;
+  }
+
+  function renderStats(){
+    var n = state.bookings.length;
+    $("stat-total").textContent = SLOTS.length;
+    $("stat-open").textContent = SLOTS.length - n;
+    $("stat-book").textContent = "예약 " + n + "건";
+  }
+
+  function renderSummary(){
+    var s = SLOTS.filter(function(x){ return x.id === sel.slot; })[0];
+    var name = $("f-name").value.trim();
+    var t = document.querySelector('input[name="ctype"]:checked');
+    if (!s) {
+      $("sum-1").textContent = "시간을 선택해 주세요";
+      $("sum-2").textContent = "—";
+    } else {
+      $("sum-1").textContent = (name || "자녀 이름") + " · " + (t ? TYPES[t.value] : "상담 형태 미선택");
+      $("sum-2").textContent = slotLabel(s);
+    }
+    $("submit").disabled = busy || !s || mode === "readonly";
+  }
+
+  function render(){ renderSlots(); renderStats(); renderSummary(); }
+
+  /* ---------- validation & submit ---------- */
+
+  function validate(){
+    var name = $("f-name").value.trim();
+    var phone = normPhone($("f-phone").value);
+    var t = document.querySelector('input[name="ctype"]:checked');
+    if (name.length < 2) return { err:"자녀 이름을 두 글자 이상 적어 주세요." };
+    if (!phone) return { err:"연락처를 010-1234-5678 형식으로 적어 주세요." };
+    if (!t) return { err:"상담 형태를 선택해 주세요." };
+    if (!sel.slot) return { err:"상담 일시를 선택해 주세요." };
+    if (bookedMap()[sel.slot]) return { err:"방금 다른 분이 이 시간을 예약했습니다. 다른 시간을 선택해 주세요." };
+    return { ok:{ id: String(Date.now()) + "-" + Math.random().toString(36).slice(2,7), slot: sel.slot, name: name, phone: phone, type: t.value, at: new Date().toISOString() } };
+  }
+
+  function showErr(m){ $("err").textContent = m || ""; }
+
+  function stash(){
+    try {
+      window.sessionStorage.setItem("robomakers-draft", JSON.stringify({
+        name: $("f-name").value, phone: $("f-phone").value,
+        type: (document.querySelector('input[name="ctype"]:checked') || {}).value || "",
+        slot: sel.slot
+      }));
+    } catch(e){}
+  }
+
+  function unstash(){
+    try {
+      var raw = window.sessionStorage.getItem("robomakers-draft");
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      window.sessionStorage.removeItem("robomakers-draft");
+      if (d.name) $("f-name").value = d.name;
+      if (d.phone) $("f-phone").value = d.phone;
+      if (d.type) { var r = document.querySelector('input[name="ctype"][value="' + d.type + '"]'); if (r) r.checked = true; }
+      if (d.slot && !bookedMap()[d.slot]) sel.slot = d.slot;
+    } catch(e){}
+  }
+
+  function submit(){
+    if (busy) return;
+    showErr("");
+    var v = validate();
+    if (v.err) { showErr(v.err); render(); return; }
+
+    var dupe = state.bookings.filter(function(b){ return b.name === v.ok.name; })[0];
+    if (dupe && !$("submit").dataset.confirmed) {
+      $("submit").dataset.confirmed = "1";
+      $("submit").textContent = "그래도 예약하기";
+      showErr(v.ok.name + " 이름으로 이미 " + slotLabel(SLOTS.filter(function(s){ return s.id === dupe.slot; })[0]) + " 예약이 있습니다. 추가로 예약하시려면 한 번 더 눌러 주세요.");
+      return;
+    }
+
+    busy = true;
+    $("submit").disabled = true;
+    $("submit").textContent = "저장하는 중…";
+
+    var next = { bookings: state.bookings.concat([v.ok]) };
+
+    if (mode === "shared" && api) {
+      stash();
+      api.publish(buildDoc(next)).then(function(){
+        // the view reloads to the new version
+      })["catch"](function(e){
+        busy = false;
+        $("submit").disabled = false;
+        $("submit").textContent = "예약하기";
+        var code = (e && e.code) || "upstream_error";
+        if (code === "conflict") {
+          showErr("같은 순간에 다른 분이 예약했습니다. 화면이 새로고침되면 남은 시간을 다시 선택해 주세요.");
+        } else if (code === "not_writer" || code === "not_granted" || code === "not_declared" || code === "consent_required") {
+          mode = "readonly";
+          setModeNote("이 링크는 읽기 전용입니다. 예약이 가능한 링크를 학원에 요청해 주세요.");
+          showErr("이 링크에서는 예약을 저장할 수 없습니다.");
+        } else if (code === "rate_limited") {
+          showErr("잠시 뒤 다시 눌러 주세요.");
+        } else {
+          showErr("저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+        }
+        render();
+      });
+    } else {
+      state = next;
+      saveLocal();
+      busy = false;
+      done(v.ok);
+    }
+  }
+
+  function done(b){
+    var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0];
+    $("app").innerHTML =
+      '<div class="done">' +
+      '<div style="display:flex;gap:11px;align-items:center">' +
+      '<span class="logo sm" role="img" aria-label="로보메이커스 학원 로고"><\/span>' +
+      '<h2>예약이 접수되었습니다<\/h2><\/div>' +
+      '<div class="rows">' +
+      '<div class="row"><span class="k">자녀<\/span><span class="v">' + esc(b.name) + '<\/span><\/div>' +
+      '<div class="row"><span class="k">일시<\/span><span class="v mono">' + slotLabel(s) + '<\/span><\/div>' +
+      '<div class="row"><span class="k">형태<\/span><span class="v">' + TYPES[b.type] + '<\/span><\/div>' +
+      '<div class="row"><span class="k">연락처<\/span><span class="v mono">' + esc(b.phone) + '<\/span><\/div>' +
+      '<\/div>' +
+      '<p class="note">상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.<\/p>' +
+      '<div><button type="button" class="ghost" id="again">다른 자녀 예약하기<\/button><\/div>' +
+      '<\/div>';
+    var again = $("again");
+    if (again) again.addEventListener("click", function(){ window.location.reload(); });
+    renderStats();
+  }
+
+  /* ---------- self-publishing document ---------- */
+
+  function template(){
+    return $("page-src").textContent.split("<\\/").join("<\/");
+  }
+
+  function buildDoc(next){
+    var tpl = template();
+    var kState = "__STATE" + "_JSON__";
+    var kTpl = "__TEMPLATE" + "_SRC__";
+    var json = JSON.stringify(next).replace(/<\/g, "\\u003c");
+    return tpl.replace(kState, function(){ return json; })
+              .replace(kTpl, function(){ return tpl.split("<\/").join("<\\/"); });
+  }
+
+  /* ---------- admin ---------- */
+
+  function renderAdmin(){
+    var rows = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+    $("admin-rows").innerHTML = rows.length ? rows.map(function(b){
+      var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || { date:"?", dow:"?", start:"?", end:"?" };
+      return "<tr><td class=\"mono\">" + s.date.replace("-", "/") + "(" + s.dow + ")<\/td>" +
+             "<td class=\"mono\">" + s.start + "~" + s.end + "<\/td>" +
+             "<td>" + esc(b.name) + "<\/td>" +
+             "<td class=\"mono\">" + esc(b.phone) + "<\/td>" +
+             "<td>" + TYPES[b.type] + "<\/td>" +
+             "<td class=\"mono\">" + esc(String(b.at).slice(5,16).replace("T", " ")) + "<\/td><td><\/td><\/tr>";
+    }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.<\/td><\/tr>';
+  }
+
+  function csv(){
+    var head = "날짜,시간,이름,연락처,상담형태,접수시각";
+    var lines = state.bookings.slice().sort(function(a,b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
+      var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
+      return [s.date, (s.start || "") + "-" + (s.end || ""), b.name, b.phone, TYPES[b.type], b.at].join(",");
+    });
+    return [head].concat(lines).join("\n");
+  }
+
+  function setModeNote(text){
+    var el = $("mode-note");
+    if (!text) { el.hidden = true; el.textContent = ""; return; }
+    el.hidden = false;
+    el.textContent = text;
+  }
+
+  /* ---------- wiring ---------- */
+
+  $("slotwrap").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest(".slot[data-slot]") : null;
+    if (!btn) return;
+    sel.slot = (sel.slot === btn.dataset.slot) ? null : btn.dataset.slot;
+    showErr("");
+    render();
+  });
+
+  $("f-name").addEventListener("input", renderSummary);
+  $("f-phone").addEventListener("input", function(){
+    var d = this.value.replace(/[^0-9]/g, "").slice(0, 11);
+    this.value = d.length > 7 ? d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7)
+               : d.length > 3 ? d.slice(0,3) + "-" + d.slice(3) : d;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ctype"]'), function(r){
+    r.addEventListener("change", renderSummary);
+  });
+  $("submit").addEventListener("click", submit);
+  $("form").addEventListener("submit", function(e){ e.preventDefault(); submit(); });
+
+  $("admin-open").addEventListener("click", function(){
+    if ($("admin-code").value.trim() !== ADMIN_CODE) { $("admin-code").value = ""; $("admin-code").placeholder = "코드가 다릅니다"; return; }
+    $("admin-gate").hidden = true;
+    $("admin-panel").hidden = false;
+    renderAdmin();
+  });
+  $("copy-csv").addEventListener("click", function(){
+    var text = csv();
+    var note = $("copy-note");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ note.textContent = "복사했습니다"; })["catch"](function(){ note.textContent = "복사 실패 — 표를 직접 선택해 주세요"; });
+    } else { note.textContent = "이 브라우저에서는 표를 직접 선택해 주세요"; }
+  });
+
+  /* boot */
+  render();
+
+  if (window.claude && typeof window.claude.use === "function") {
+    setModeNote("공유 저장소를 연결하는 중입니다…");
+    window.claude.use("artifact").then(function(ns){
+      if (ns) {
+        api = ns;
+        mode = "shared";
+        setModeNote("");
+      } else {
+        mode = "local";
+        localOverlay();
+        setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
+      }
+      unstash();
+      render();
+    })["catch"](function(){
+      mode = "local";
+      localOverlay();
+      setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
+      render();
+    });
+  } else {
+    mode = "local";
+    localOverlay();
+    setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
+    unstash();
+    render();
+  }
+})();
+<\/script>
+<script id="page-src" type="text/plain">__TEMPLATE_SRC__<\/script>
+<!--/BODY-->
+<\/body>
+<\/html>
+</script>
+<!--/BODY-->
+</body>
+</html>
