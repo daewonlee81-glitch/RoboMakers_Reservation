@@ -347,6 +347,12 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
 
   function $(id){ return document.getElementById(id); }
 
+  /* 구글 스프레드시트(Apps Script) 웹앱 주소.
+     Apps Script에서 "배포 > 새 배포 > 웹 앱"으로 받은 https://script.google.com/macros/s/..../exec 주소를
+     아래 따옴표 안에 붙여넣으면, 이 페이지의 모든 예약이 그 스프레드시트 한 곳에 모입니다.
+     비워 두면 예약이 이 기기에만 저장됩니다. */
+  var API_URL = "";
+
   var ADMIN_CODE = "2027";
 
   var SLOTS = [
@@ -567,6 +573,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
         }
         render();
       });
+    } else if (mode === "api") {
+      postRemote(v.ok);
     } else {
       state = next;
       saveLocal();
@@ -609,6 +617,64 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     var json = JSON.stringify(next).replace(/</g, "\\u003c");
     return tpl.replace(kState, function(){ return json; })
               .replace(kTpl, function(){ return tpl.split("</").join("<\\/"); });
+  }
+
+  /* ---------- 구글 스프레드시트 연동 ---------- */
+
+  function slotOf(id){ return SLOTS.filter(function(x){ return x.id === id; })[0]; }
+
+  function loadRemote(silent){
+    return fetch(API_URL, { method:"GET" })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d || !d.ok || !Array.isArray(d.bookings)) throw new Error("bad response");
+        state = { bookings: d.bookings };
+        mode = "api";
+        setModeNote("");
+        render();
+      })["catch"](function(){
+        if (!silent) {
+          mode = "local";
+          localOverlay();
+          setModeNote("예약 목록을 불러오지 못했습니다. 연결을 확인해 주세요. 지금 하는 예약은 이 기기에만 저장됩니다.");
+          render();
+        }
+      });
+  }
+
+  function postRemote(b){
+    var s = slotOf(b.slot) || {};
+    var body = JSON.stringify({
+      slot: b.slot, name: b.name, phone: b.phone,
+      type: b.type, typeLabel: TYPES[b.type],
+      date: s.date ? "2026-" + s.date : "", time: (s.start || "") + "~" + (s.end || "")
+    });
+    fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: body })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && Array.isArray(d.bookings)) state = { bookings: d.bookings };
+        resetBtn();
+        if (d && d.ok) { done(b); return; }
+        if (d && d.error === "taken") {
+          sel.slot = null;
+          showErr("방금 다른 분이 이 시간을 예약했습니다. 남은 시간 중에서 다시 선택해 주세요.");
+        } else if (d && d.error === "busy") {
+          showErr("접수가 몰리고 있습니다. 잠시 뒤 다시 눌러 주세요.");
+        } else {
+          showErr("저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+        }
+        render();
+      })["catch"](function(){
+        resetBtn();
+        showErr("연결이 끊겼습니다. 인터넷 상태를 확인하고 다시 눌러 주세요.");
+        render();
+      });
+  }
+
+  function resetBtn(){
+    busy = false;
+    $("submit").disabled = false;
+    $("submit").textContent = "예약하기";
   }
 
   /* ---------- admin ---------- */
@@ -681,33 +747,33 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   /* boot */
   render();
 
+  function fallback(){
+    if (API_URL) {
+      setModeNote("예약 현황을 불러오는 중입니다…");
+      loadRemote(false);
+    } else {
+      mode = "local";
+      localOverlay();
+      setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
+      render();
+    }
+  }
+
   if (window.claude && typeof window.claude.use === "function") {
     setModeNote("공유 저장소를 연결하는 중입니다…");
     window.claude.use("artifact").then(function(ns){
-      if (ns) {
-        api = ns;
-        mode = "shared";
-        setModeNote("");
-      } else {
-        mode = "local";
-        localOverlay();
-        setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
-      }
       unstash();
-      render();
-    })["catch"](function(){
-      mode = "local";
-      localOverlay();
-      setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
-      render();
-    });
+      if (ns) { api = ns; mode = "shared"; setModeNote(""); render(); }
+      else fallback();
+    })["catch"](function(){ unstash(); fallback(); });
   } else {
-    mode = "local";
-    localOverlay();
-    setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
     unstash();
-    render();
+    fallback();
   }
+
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden && mode === "api" && !busy) loadRemote(true);
+  });
 })();
 </script>
 <script id="page-src" type="text/plain"><!doctype html>
@@ -1059,6 +1125,12 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
 
   function $(id){ return document.getElementById(id); }
 
+  /* 구글 스프레드시트(Apps Script) 웹앱 주소.
+     Apps Script에서 "배포 > 새 배포 > 웹 앱"으로 받은 https://script.google.com/macros/s/..../exec 주소를
+     아래 따옴표 안에 붙여넣으면, 이 페이지의 모든 예약이 그 스프레드시트 한 곳에 모입니다.
+     비워 두면 예약이 이 기기에만 저장됩니다. */
+  var API_URL = "";
+
   var ADMIN_CODE = "2027";
 
   var SLOTS = [
@@ -1279,6 +1351,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
         }
         render();
       });
+    } else if (mode === "api") {
+      postRemote(v.ok);
     } else {
       state = next;
       saveLocal();
@@ -1321,6 +1395,64 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     var json = JSON.stringify(next).replace(/<\/g, "\\u003c");
     return tpl.replace(kState, function(){ return json; })
               .replace(kTpl, function(){ return tpl.split("<\/").join("<\\/"); });
+  }
+
+  /* ---------- 구글 스프레드시트 연동 ---------- */
+
+  function slotOf(id){ return SLOTS.filter(function(x){ return x.id === id; })[0]; }
+
+  function loadRemote(silent){
+    return fetch(API_URL, { method:"GET" })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d || !d.ok || !Array.isArray(d.bookings)) throw new Error("bad response");
+        state = { bookings: d.bookings };
+        mode = "api";
+        setModeNote("");
+        render();
+      })["catch"](function(){
+        if (!silent) {
+          mode = "local";
+          localOverlay();
+          setModeNote("예약 목록을 불러오지 못했습니다. 연결을 확인해 주세요. 지금 하는 예약은 이 기기에만 저장됩니다.");
+          render();
+        }
+      });
+  }
+
+  function postRemote(b){
+    var s = slotOf(b.slot) || {};
+    var body = JSON.stringify({
+      slot: b.slot, name: b.name, phone: b.phone,
+      type: b.type, typeLabel: TYPES[b.type],
+      date: s.date ? "2026-" + s.date : "", time: (s.start || "") + "~" + (s.end || "")
+    });
+    fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: body })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && Array.isArray(d.bookings)) state = { bookings: d.bookings };
+        resetBtn();
+        if (d && d.ok) { done(b); return; }
+        if (d && d.error === "taken") {
+          sel.slot = null;
+          showErr("방금 다른 분이 이 시간을 예약했습니다. 남은 시간 중에서 다시 선택해 주세요.");
+        } else if (d && d.error === "busy") {
+          showErr("접수가 몰리고 있습니다. 잠시 뒤 다시 눌러 주세요.");
+        } else {
+          showErr("저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+        }
+        render();
+      })["catch"](function(){
+        resetBtn();
+        showErr("연결이 끊겼습니다. 인터넷 상태를 확인하고 다시 눌러 주세요.");
+        render();
+      });
+  }
+
+  function resetBtn(){
+    busy = false;
+    $("submit").disabled = false;
+    $("submit").textContent = "예약하기";
   }
 
   /* ---------- admin ---------- */
@@ -1393,33 +1525,33 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   /* boot */
   render();
 
+  function fallback(){
+    if (API_URL) {
+      setModeNote("예약 현황을 불러오는 중입니다…");
+      loadRemote(false);
+    } else {
+      mode = "local";
+      localOverlay();
+      setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
+      render();
+    }
+  }
+
   if (window.claude && typeof window.claude.use === "function") {
     setModeNote("공유 저장소를 연결하는 중입니다…");
     window.claude.use("artifact").then(function(ns){
-      if (ns) {
-        api = ns;
-        mode = "shared";
-        setModeNote("");
-      } else {
-        mode = "local";
-        localOverlay();
-        setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
-      }
       unstash();
-      render();
-    })["catch"](function(){
-      mode = "local";
-      localOverlay();
-      setModeNote("공유 저장소에 연결하지 못했습니다. 예약이 이 기기에만 저장됩니다.");
-      render();
-    });
+      if (ns) { api = ns; mode = "shared"; setModeNote(""); render(); }
+      else fallback();
+    })["catch"](function(){ unstash(); fallback(); });
   } else {
-    mode = "local";
-    localOverlay();
-    setModeNote("이 사본은 예약이 이 기기에만 저장됩니다. 여러 보호자와 공유하려면 학원에서 안내한 예약 링크를 사용해 주세요.");
     unstash();
-    render();
+    fallback();
   }
+
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden && mode === "api" && !busy) loadRemote(true);
+  });
 })();
 <\/script>
 <script id="page-src" type="text/plain">__TEMPLATE_SRC__<\/script>
