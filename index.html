@@ -290,7 +290,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
                 <input type="text" id="f-name" autocomplete="off" placeholder="예: 김로보" maxlength="20">
               </label>
               <label class="field">
-                <span>보호자 연락처</span>
+                <span>보호자 연락처 <span style="color:var(--faint);font-weight:400">· 확인 문자를 보내드립니다</span></span>
                 <input type="tel" id="f-phone" autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" maxlength="13">
               </label>
             </div>
@@ -371,7 +371,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
         </div>
 
         <div class="tablewrap"><table>
-          <thead><tr><th>날짜</th><th>시간</th><th>이름</th><th>연락처</th><th>형태</th><th>접수</th><th>관리</th></tr></thead>
+          <thead><tr><th>날짜</th><th>시간</th><th>이름</th><th>연락처</th><th>형태</th><th>접수</th><th>문자</th><th>관리</th></tr></thead>
           <tbody id="admin-rows"></tbody>
         </table></div>
 
@@ -715,7 +715,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
       '<div class="row"><span class="k">형태</span><span class="v">' + TYPES[b.type] + '</span></div>' +
       '<div class="row"><span class="k">연락처</span><span class="v mono">' + esc(b.phone) + '</span></div>' +
       '</div>' +
-      '<p class="note">상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.</p>' +
+      '<p class="note">' + (mode === "api" ? '적어주신 번호로 <b>예약 확인 문자</b>를 보내드렸습니다. 상담 전날에 안내 문자를 한 번 더 보내드립니다.<br>' : '') +
+      '상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.</p>' +
       '<div><button type="button" class="ghost" id="again">다른 자녀 예약하기</button></div>' +
       '</div>';
     var again = $("again");
@@ -816,6 +817,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
+    if (action === "resend") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -842,6 +844,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     if (!d || !d.ok) {
       adminNote(d && d.error === "unauthorized" ? "관리자 코드가 맞지 않습니다"
               : d && d.error === "taken" ? "이미 예약이 있는 시간입니다"
+              : d && d.error === "nosms" ? "이 링크에서는 문자를 보낼 수 없습니다"
               : d && d.error === "network" ? "연결에 실패했습니다"
               : "처리하지 못했습니다");
       return false;
@@ -868,9 +871,11 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
              '<td class="mono">' + esc(blocked ? "—" : (b.phone || "")) + "</td>" +
              "<td>" + (TYPES[b.type] || b.type) + "</td>" +
              '<td class="mono">' + esc(shortAt(b.at)) + "</td>" +
+             '<td class="mono" style="color:var(--muted)">' + (blocked ? "—" : (esc(b.sms || "미발송") +
+               ' <button type="button" class="rowbtn" style="color:var(--accent)" data-resend="' + esc(b.slot) + '">재발송</button>')) + "</td>" +
              '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
              (blocked ? "해제" : "취소") + "</button></td></tr>";
-    }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.</td></tr>';
+    }).join("") : '<tr><td colspan="8" style="color:var(--faint)">아직 예약이 없습니다.</td></tr>';
 
     var booked = bookedMap();
     $("a-slot").innerHTML = SLOTS.filter(function(x){ return !booked[x.id]; })
@@ -886,10 +891,10 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   }
 
   function csv(){
-    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각";
+    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각,확인문자,리마인더";
     var lines = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
-      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at)].join(",");
+      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at), b.sms || "", b.remind || ""].join(",");
     });
     return [head].concat(lines).join("\n");
   }
@@ -995,6 +1000,15 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   });
 
   $("admin-rows").addEventListener("click", function(e){
+    var again = e.target.closest ? e.target.closest("[data-resend]") : null;
+    if (again) {
+      adminNote("문자 보내는 중…");
+      adminCall("resend", { slot: again.dataset.resend }, function(d){
+        if (d && d.ok) { adminApply(d, "문자를 보냈습니다"); }
+        else { adminApply(d && d.bookings ? { ok:true, bookings:d.bookings } : { ok:true }, "문자를 보내지 못했습니다" + (d && d.error ? " (" + d.error + ")" : "")); }
+      });
+      return;
+    }
     var btn = e.target.closest ? e.target.closest("[data-cancel]") : null;
     if (!btn) return;
     if (btn.dataset.armed !== "1") {
@@ -1372,7 +1386,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
                 <input type="text" id="f-name" autocomplete="off" placeholder="예: 김로보" maxlength="20">
               <\/label>
               <label class="field">
-                <span>보호자 연락처<\/span>
+                <span>보호자 연락처 <span style="color:var(--faint);font-weight:400">· 확인 문자를 보내드립니다<\/span><\/span>
                 <input type="tel" id="f-phone" autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" maxlength="13">
               <\/label>
             <\/div>
@@ -1453,7 +1467,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
         <\/div>
 
         <div class="tablewrap"><table>
-          <thead><tr><th>날짜<\/th><th>시간<\/th><th>이름<\/th><th>연락처<\/th><th>형태<\/th><th>접수<\/th><th>관리<\/th><\/tr><\/thead>
+          <thead><tr><th>날짜<\/th><th>시간<\/th><th>이름<\/th><th>연락처<\/th><th>형태<\/th><th>접수<\/th><th>문자<\/th><th>관리<\/th><\/tr><\/thead>
           <tbody id="admin-rows"><\/tbody>
         <\/table><\/div>
 
@@ -1797,7 +1811,8 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
       '<div class="row"><span class="k">형태<\/span><span class="v">' + TYPES[b.type] + '<\/span><\/div>' +
       '<div class="row"><span class="k">연락처<\/span><span class="v mono">' + esc(b.phone) + '<\/span><\/div>' +
       '<\/div>' +
-      '<p class="note">상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.<\/p>' +
+      '<p class="note">' + (mode === "api" ? '적어주신 번호로 <b>예약 확인 문자<\/b>를 보내드렸습니다. 상담 전날에 안내 문자를 한 번 더 보내드립니다.<br>' : '') +
+      '상담은 60분간 진행되며, 현재 배우고 있는 내용 · 앞으로 배울 내용 · 2027년도 행사 일정을 안내해 드립니다. 일정 변경이 필요하시면 학원으로 연락해 주세요.<\/p>' +
       '<div><button type="button" class="ghost" id="again">다른 자녀 예약하기<\/button><\/div>' +
       '<\/div>';
     var again = $("again");
@@ -1898,6 +1913,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
+    if (action === "resend") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -1924,6 +1940,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     if (!d || !d.ok) {
       adminNote(d && d.error === "unauthorized" ? "관리자 코드가 맞지 않습니다"
               : d && d.error === "taken" ? "이미 예약이 있는 시간입니다"
+              : d && d.error === "nosms" ? "이 링크에서는 문자를 보낼 수 없습니다"
               : d && d.error === "network" ? "연결에 실패했습니다"
               : "처리하지 못했습니다");
       return false;
@@ -1950,9 +1967,11 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
              '<td class="mono">' + esc(blocked ? "—" : (b.phone || "")) + "<\/td>" +
              "<td>" + (TYPES[b.type] || b.type) + "<\/td>" +
              '<td class="mono">' + esc(shortAt(b.at)) + "<\/td>" +
+             '<td class="mono" style="color:var(--muted)">' + (blocked ? "—" : (esc(b.sms || "미발송") +
+               ' <button type="button" class="rowbtn" style="color:var(--accent)" data-resend="' + esc(b.slot) + '">재발송<\/button>')) + "<\/td>" +
              '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
              (blocked ? "해제" : "취소") + "<\/button><\/td><\/tr>";
-    }).join("") : '<tr><td colspan="7" style="color:var(--faint)">아직 예약이 없습니다.<\/td><\/tr>';
+    }).join("") : '<tr><td colspan="8" style="color:var(--faint)">아직 예약이 없습니다.<\/td><\/tr>';
 
     var booked = bookedMap();
     $("a-slot").innerHTML = SLOTS.filter(function(x){ return !booked[x.id]; })
@@ -1968,10 +1987,10 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   }
 
   function csv(){
-    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각";
+    var head = "날짜,시간,자녀이름,연락처,상담형태,접수시각,확인문자,리마인더";
     var lines = adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : 1; }).map(function(b){
       var s = SLOTS.filter(function(x){ return x.id === b.slot; })[0] || {};
-      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at)].join(",");
+      return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at), b.sms || "", b.remind || ""].join(",");
     });
     return [head].concat(lines).join("\n");
   }
@@ -2077,6 +2096,15 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   });
 
   $("admin-rows").addEventListener("click", function(e){
+    var again = e.target.closest ? e.target.closest("[data-resend]") : null;
+    if (again) {
+      adminNote("문자 보내는 중…");
+      adminCall("resend", { slot: again.dataset.resend }, function(d){
+        if (d && d.ok) { adminApply(d, "문자를 보냈습니다"); }
+        else { adminApply(d && d.bookings ? { ok:true, bookings:d.bookings } : { ok:true }, "문자를 보내지 못했습니다" + (d && d.error ? " (" + d.error + ")" : "")); }
+      });
+      return;
+    }
     var btn = e.target.closest ? e.target.closest("[data-cancel]") : null;
     if (!btn) return;
     if (btn.dataset.armed !== "1") {
