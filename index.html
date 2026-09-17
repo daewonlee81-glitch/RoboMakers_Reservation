@@ -217,6 +217,18 @@ select:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .cap2{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
 .agrid{display:grid;grid-template-columns:1fr;gap:10px}
 @media (min-width:560px){.agrid{grid-template-columns:1fr 1fr}}
+.msgbox{border:1px solid var(--accent);border-radius:var(--radius);background:var(--surface-2);padding:13px 14px;display:flex;flex-direction:column;gap:10px}
+.msghead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.msghead .who{font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px}
+.segs{display:flex;gap:0;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden}
+.seg{font:inherit;font-size:12px;padding:5px 11px;border:none;background:transparent;color:var(--muted);cursor:pointer;touch-action:manipulation}
+.seg[aria-pressed="true"]{background:var(--accent);color:#fff}
+.msgbox textarea{font:inherit;font-size:13.5px;line-height:1.6;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;resize:vertical;min-height:210px}
+.msgbox textarea:focus{outline:none;border-color:var(--accent)}
+.msgbox .phone{font-size:15px;font-weight:600;letter-spacing:.02em}
+a.ghost{font:inherit;font-size:13px;padding:8px 14px;border-radius:7px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
+a.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.rowbtn.go{color:var(--accent)}
 .rowbtn{font:inherit;font-size:11.5px;padding:5px 10px;border-radius:6px;border:1px solid var(--line-strong);background:transparent;color:var(--danger);cursor:pointer;touch-action:manipulation}
 .rowbtn:hover{border-color:var(--danger)}
 .rowbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
@@ -376,6 +388,29 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
           <tbody id="admin-rows"></tbody>
         </table></div>
 
+        <div class="msgbox" id="msgbox" hidden>
+          <div class="msghead">
+            <span class="who" id="msg-who"></span>
+            <span class="segs">
+              <button type="button" class="seg" id="seg-book" aria-pressed="true">확인 문자</button>
+              <button type="button" class="seg" id="seg-remind" aria-pressed="false">전날 리마인더</button>
+            </span>
+          </div>
+          <div class="arow">
+            <span class="mono phone" id="msg-phone"></span>
+            <button type="button" class="ghost" id="msg-copyphone">번호 복사</button>
+            <a class="ghost" id="msg-open" href="#">메시지 앱 열기</a>
+          </div>
+          <textarea id="msg-text" spellcheck="false"></textarea>
+          <div class="arow">
+            <button type="button" class="primary" id="msg-copy" style="font-size:14px;padding:10px 18px;min-height:auto">문안 복사</button>
+            <button type="button" class="ghost" id="msg-done">보냄 표시</button>
+            <button type="button" class="ghost" id="msg-next">다음 사람</button>
+            <button type="button" class="ghost" id="msg-close">닫기</button>
+            <span class="mono" id="msg-note" style="font-size:12px;color:var(--faint)"></span>
+          </div>
+        </div>
+
         <div class="apanel">
           <p class="cap2">전화로 받은 예약 넣기 · 상담 불가 시간 막기</p>
           <div class="agrid">
@@ -443,6 +478,13 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   var adminRows = [];
   var loaded = false;
   var loadTries = 0;
+  var msgSlot = null;
+  var msgKind = "book";
+
+  /* 상담 전에 학부모가 읽을 안내자료 (구글 드라이브 공개 링크) */
+  var MATERIAL_URL = "https://drive.google.com/file/d/1H-jL_zwzmAHH_xxfNl2qhDnnZzLHTSvr/view";
+  var MATERIAL_NAME = "2026 하반기 학부모 상담 안내자료";
+  var ACADEMY = "로보메이커스 학원";
   var busy = false;
 
 
@@ -818,7 +860,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
-    if (action === "resend" || action === "resendAll") { cb({ ok:false, error:"nosms" }); return; }
+    if (action === "resend" || action === "resendAll" || action === "mark") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -856,6 +898,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     }
     renderAdmin();
     render();
+    if (!$("msgbox").hidden && msgSlot) renderMsg();
     adminNote(okText || "");
     return true;
   }
@@ -873,7 +916,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
              "<td>" + (TYPES[b.type] || b.type) + "</td>" +
              '<td class="mono">' + esc(shortAt(b.at)) + "</td>" +
              '<td class="mono" style="color:var(--muted)">' + (blocked ? "—" : (esc(b.sms || "미발송") +
-               ' <button type="button" class="rowbtn" style="color:var(--accent)" data-resend="' + esc(b.slot) + '">재발송</button>')) + "</td>" +
+               ' <button type="button" class="rowbtn go" data-msg="' + esc(b.slot) + '">문자</button>')) + "</td>" +
              '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
              (blocked ? "해제" : "취소") + "</button></td></tr>";
     }).join("") : '<tr><td colspan="8" style="color:var(--faint)">아직 예약이 없습니다.</td></tr>';
@@ -898,6 +941,102 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
       return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at), b.sms || "", b.remind || ""].join(",");
     });
     return [head].concat(lines).join("\n");
+  }
+
+  /* ---------- 맥 메시지 앱으로 직접 보낼 문안 ---------- */
+
+  function whenText(slotId){
+    var s = slotOf(slotId);
+    if (!s) return "";
+    return parseInt(s.date.slice(0, 2), 10) + "월 " + parseInt(s.date.slice(3), 10) + "일(" + s.dow + ") " + s.start + "~" + s.end;
+  }
+
+  function msgBooking(b){
+    var lines = [
+      "[" + ACADEMY + "] 상담 예약이 접수되었습니다.",
+      "",
+      "- 자녀 " + b.name,
+      "- 일시 " + whenText(b.slot),
+      "- 방식 " + (TYPES[b.type] || b.type)
+    ];
+    if (b.type === "zoom") lines.push("- 줌 참여 링크는 상담 전에 다시 보내드립니다.");
+    if (b.type === "visit") lines.push("- 시간에 맞춰 학원으로 와주세요.");
+    lines.push("");
+    lines.push("[상담 전에 읽어주세요]");
+    lines.push(MATERIAL_NAME + "(PDF)를 미리 읽고 오시면 상담 시간을 훨씬 알차게 쓸 수 있습니다.");
+    lines.push("아래 주소에서 내려받으실 수 있습니다.");
+    lines.push(MATERIAL_URL);
+    lines.push("");
+    lines.push("시간 변경이나 취소가 필요하시면 연락 주세요.");
+    return lines.join("\n");
+  }
+
+  function msgReminder(b){
+    var lines = [
+      "[" + ACADEMY + "] 내일 상담 안내드립니다.",
+      "",
+      "- 자녀 " + b.name,
+      "- 일시 " + whenText(b.slot),
+      "- 방식 " + (TYPES[b.type] || b.type),
+      "",
+      "안내자료를 아직 못 보셨다면 오늘 한 번 읽어봐 주세요.",
+      MATERIAL_URL,
+      "",
+      "시간 변경이 필요하시면 미리 연락 주세요."
+    ];
+    return lines.join("\n");
+  }
+
+  function rowOf(slot){
+    return adminRows.filter(function(x){ return x.slot === slot; })[0];
+  }
+
+  function sortedRows(){
+    return adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+  }
+
+  function pendingRows(){
+    return sortedRows().filter(function(b){
+      return b.type !== "block" && !(msgKind === "remind" ? b.remind : b.sms);
+    });
+  }
+
+  function openMsg(slot){
+    msgSlot = slot;
+    renderMsg();
+    $("msgbox").hidden = false;
+    $("msgbox").scrollIntoView({ block:"nearest", behavior:"smooth" });
+  }
+
+  function renderMsg(){
+    var b = rowOf(msgSlot);
+    if (!b) { $("msgbox").hidden = true; return; }
+    var left = pendingRows().length;
+    $("msg-who").textContent = b.name + " · " + whenText(b.slot);
+    $("msg-phone").textContent = b.phone || "(번호 없음)";
+    $("msg-text").value = (msgKind === "remind") ? msgReminder(b) : msgBooking(b);
+    $("msg-open").href = "sms:" + String(b.phone || "").replace(/[^0-9]/g, "");
+    $("seg-book").setAttribute("aria-pressed", msgKind === "book" ? "true" : "false");
+    $("seg-remind").setAttribute("aria-pressed", msgKind === "remind" ? "true" : "false");
+    var done = (msgKind === "remind") ? b.remind : b.sms;
+    $("msg-note").textContent = (done ? "이미 " + done + " · " : "") + "안 보낸 사람 " + left + "명";
+  }
+
+  function copyText(text, okMsg){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ $("msg-note").textContent = okMsg; })
+        ["catch"](function(){ $("msg-note").textContent = "복사 실패 — 직접 선택해 주세요"; });
+    } else {
+      $("msg-text").focus(); $("msg-text").select();
+      $("msg-note").textContent = "직접 복사(⌘C)해 주세요";
+    }
+  }
+
+  function gotoNext(){
+    var list = pendingRows();
+    var next = list.filter(function(x){ return x.slot !== msgSlot; })[0] || list[0];
+    if (!next) { $("msgbox").hidden = true; adminNote("모두 보냈습니다"); return; }
+    openMsg(next.slot);
   }
 
   function setModeNote(text, retry){
@@ -1023,7 +1162,24 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     adminCall("list", {}, function(d){ if (adminApply(d)) adminNote(adminRows.length + "건 · 방금 갱신"); });
   });
 
+  $("seg-book").addEventListener("click", function(){ msgKind = "book"; renderMsg(); });
+  $("seg-remind").addEventListener("click", function(){ msgKind = "remind"; renderMsg(); });
+  $("msg-close").addEventListener("click", function(){ $("msgbox").hidden = true; });
+  $("msg-next").addEventListener("click", gotoNext);
+  $("msg-copy").addEventListener("click", function(){ copyText($("msg-text").value, "문안을 복사했습니다 — 메시지 앱에 붙여넣으세요"); });
+  $("msg-copyphone").addEventListener("click", function(){ copyText($("msg-phone").textContent, "번호를 복사했습니다"); });
+  $("msg-done").addEventListener("click", function(){
+    var slot = msgSlot;
+    $("msg-note").textContent = "표시하는 중…";
+    adminCall("mark", { slot: slot, kind: msgKind, note: "수동 발송" }, function(d){
+      if (d && d.ok) { adminApply(d, "보냄으로 표시했습니다"); gotoNext(); }
+      else { $("msg-note").textContent = "표시하지 못했습니다" + (d && d.error ? " (" + d.error + ")" : ""); }
+    });
+  });
+
   $("admin-rows").addEventListener("click", function(e){
+    var msg = e.target.closest ? e.target.closest("[data-msg]") : null;
+    if (msg) { openMsg(msg.dataset.msg); return; }
     var again = e.target.closest ? e.target.closest("[data-resend]") : null;
     if (again) {
       adminNote("문자 보내는 중…");
@@ -1337,6 +1493,18 @@ select:focus-visible{box-shadow:0 0 0 3px var(--accent-wash)}
 .cap2{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
 .agrid{display:grid;grid-template-columns:1fr;gap:10px}
 @media (min-width:560px){.agrid{grid-template-columns:1fr 1fr}}
+.msgbox{border:1px solid var(--accent);border-radius:var(--radius);background:var(--surface-2);padding:13px 14px;display:flex;flex-direction:column;gap:10px}
+.msghead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.msghead .who{font-family:"Gothic A1",sans-serif;font-weight:700;font-size:15px}
+.segs{display:flex;gap:0;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden}
+.seg{font:inherit;font-size:12px;padding:5px 11px;border:none;background:transparent;color:var(--muted);cursor:pointer;touch-action:manipulation}
+.seg[aria-pressed="true"]{background:var(--accent);color:#fff}
+.msgbox textarea{font:inherit;font-size:13.5px;line-height:1.6;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;width:100%;resize:vertical;min-height:210px}
+.msgbox textarea:focus{outline:none;border-color:var(--accent)}
+.msgbox .phone{font-size:15px;font-weight:600;letter-spacing:.02em}
+a.ghost{font:inherit;font-size:13px;padding:8px 14px;border-radius:7px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
+a.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.rowbtn.go{color:var(--accent)}
 .rowbtn{font:inherit;font-size:11.5px;padding:5px 10px;border-radius:6px;border:1px solid var(--line-strong);background:transparent;color:var(--danger);cursor:pointer;touch-action:manipulation}
 .rowbtn:hover{border-color:var(--danger)}
 .rowbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
@@ -1496,6 +1664,29 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
           <tbody id="admin-rows"><\/tbody>
         <\/table><\/div>
 
+        <div class="msgbox" id="msgbox" hidden>
+          <div class="msghead">
+            <span class="who" id="msg-who"><\/span>
+            <span class="segs">
+              <button type="button" class="seg" id="seg-book" aria-pressed="true">확인 문자<\/button>
+              <button type="button" class="seg" id="seg-remind" aria-pressed="false">전날 리마인더<\/button>
+            <\/span>
+          <\/div>
+          <div class="arow">
+            <span class="mono phone" id="msg-phone"><\/span>
+            <button type="button" class="ghost" id="msg-copyphone">번호 복사<\/button>
+            <a class="ghost" id="msg-open" href="#">메시지 앱 열기<\/a>
+          <\/div>
+          <textarea id="msg-text" spellcheck="false"><\/textarea>
+          <div class="arow">
+            <button type="button" class="primary" id="msg-copy" style="font-size:14px;padding:10px 18px;min-height:auto">문안 복사<\/button>
+            <button type="button" class="ghost" id="msg-done">보냄 표시<\/button>
+            <button type="button" class="ghost" id="msg-next">다음 사람<\/button>
+            <button type="button" class="ghost" id="msg-close">닫기<\/button>
+            <span class="mono" id="msg-note" style="font-size:12px;color:var(--faint)"><\/span>
+          <\/div>
+        <\/div>
+
         <div class="apanel">
           <p class="cap2">전화로 받은 예약 넣기 · 상담 불가 시간 막기<\/p>
           <div class="agrid">
@@ -1563,6 +1754,13 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   var adminRows = [];
   var loaded = false;
   var loadTries = 0;
+  var msgSlot = null;
+  var msgKind = "book";
+
+  /* 상담 전에 학부모가 읽을 안내자료 (구글 드라이브 공개 링크) */
+  var MATERIAL_URL = "https://drive.google.com/file/d/1H-jL_zwzmAHH_xxfNl2qhDnnZzLHTSvr/view";
+  var MATERIAL_NAME = "2026 하반기 학부모 상담 안내자료";
+  var ACADEMY = "로보메이커스 학원";
   var busy = false;
 
 
@@ -1938,7 +2136,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
-    if (action === "resend" || action === "resendAll") { cb({ ok:false, error:"nosms" }); return; }
+    if (action === "resend" || action === "resendAll" || action === "mark") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -1976,6 +2174,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     }
     renderAdmin();
     render();
+    if (!$("msgbox").hidden && msgSlot) renderMsg();
     adminNote(okText || "");
     return true;
   }
@@ -1993,7 +2192,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
              "<td>" + (TYPES[b.type] || b.type) + "<\/td>" +
              '<td class="mono">' + esc(shortAt(b.at)) + "<\/td>" +
              '<td class="mono" style="color:var(--muted)">' + (blocked ? "—" : (esc(b.sms || "미발송") +
-               ' <button type="button" class="rowbtn" style="color:var(--accent)" data-resend="' + esc(b.slot) + '">재발송<\/button>')) + "<\/td>" +
+               ' <button type="button" class="rowbtn go" data-msg="' + esc(b.slot) + '">문자<\/button>')) + "<\/td>" +
              '<td><button type="button" class="rowbtn" data-cancel="' + esc(b.slot) + '">' +
              (blocked ? "해제" : "취소") + "<\/button><\/td><\/tr>";
     }).join("") : '<tr><td colspan="8" style="color:var(--faint)">아직 예약이 없습니다.<\/td><\/tr>';
@@ -2018,6 +2217,102 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
       return [s.date || "", (s.start || "") + "-" + (s.end || ""), b.name, b.phone || "", TYPES[b.type] || b.type, shortAt(b.at), b.sms || "", b.remind || ""].join(",");
     });
     return [head].concat(lines).join("\n");
+  }
+
+  /* ---------- 맥 메시지 앱으로 직접 보낼 문안 ---------- */
+
+  function whenText(slotId){
+    var s = slotOf(slotId);
+    if (!s) return "";
+    return parseInt(s.date.slice(0, 2), 10) + "월 " + parseInt(s.date.slice(3), 10) + "일(" + s.dow + ") " + s.start + "~" + s.end;
+  }
+
+  function msgBooking(b){
+    var lines = [
+      "[" + ACADEMY + "] 상담 예약이 접수되었습니다.",
+      "",
+      "- 자녀 " + b.name,
+      "- 일시 " + whenText(b.slot),
+      "- 방식 " + (TYPES[b.type] || b.type)
+    ];
+    if (b.type === "zoom") lines.push("- 줌 참여 링크는 상담 전에 다시 보내드립니다.");
+    if (b.type === "visit") lines.push("- 시간에 맞춰 학원으로 와주세요.");
+    lines.push("");
+    lines.push("[상담 전에 읽어주세요]");
+    lines.push(MATERIAL_NAME + "(PDF)를 미리 읽고 오시면 상담 시간을 훨씬 알차게 쓸 수 있습니다.");
+    lines.push("아래 주소에서 내려받으실 수 있습니다.");
+    lines.push(MATERIAL_URL);
+    lines.push("");
+    lines.push("시간 변경이나 취소가 필요하시면 연락 주세요.");
+    return lines.join("\n");
+  }
+
+  function msgReminder(b){
+    var lines = [
+      "[" + ACADEMY + "] 내일 상담 안내드립니다.",
+      "",
+      "- 자녀 " + b.name,
+      "- 일시 " + whenText(b.slot),
+      "- 방식 " + (TYPES[b.type] || b.type),
+      "",
+      "안내자료를 아직 못 보셨다면 오늘 한 번 읽어봐 주세요.",
+      MATERIAL_URL,
+      "",
+      "시간 변경이 필요하시면 미리 연락 주세요."
+    ];
+    return lines.join("\n");
+  }
+
+  function rowOf(slot){
+    return adminRows.filter(function(x){ return x.slot === slot; })[0];
+  }
+
+  function sortedRows(){
+    return adminRows.slice().sort(function(a, b){ return a.slot < b.slot ? -1 : a.slot > b.slot ? 1 : 0; });
+  }
+
+  function pendingRows(){
+    return sortedRows().filter(function(b){
+      return b.type !== "block" && !(msgKind === "remind" ? b.remind : b.sms);
+    });
+  }
+
+  function openMsg(slot){
+    msgSlot = slot;
+    renderMsg();
+    $("msgbox").hidden = false;
+    $("msgbox").scrollIntoView({ block:"nearest", behavior:"smooth" });
+  }
+
+  function renderMsg(){
+    var b = rowOf(msgSlot);
+    if (!b) { $("msgbox").hidden = true; return; }
+    var left = pendingRows().length;
+    $("msg-who").textContent = b.name + " · " + whenText(b.slot);
+    $("msg-phone").textContent = b.phone || "(번호 없음)";
+    $("msg-text").value = (msgKind === "remind") ? msgReminder(b) : msgBooking(b);
+    $("msg-open").href = "sms:" + String(b.phone || "").replace(/[^0-9]/g, "");
+    $("seg-book").setAttribute("aria-pressed", msgKind === "book" ? "true" : "false");
+    $("seg-remind").setAttribute("aria-pressed", msgKind === "remind" ? "true" : "false");
+    var done = (msgKind === "remind") ? b.remind : b.sms;
+    $("msg-note").textContent = (done ? "이미 " + done + " · " : "") + "안 보낸 사람 " + left + "명";
+  }
+
+  function copyText(text, okMsg){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ $("msg-note").textContent = okMsg; })
+        ["catch"](function(){ $("msg-note").textContent = "복사 실패 — 직접 선택해 주세요"; });
+    } else {
+      $("msg-text").focus(); $("msg-text").select();
+      $("msg-note").textContent = "직접 복사(⌘C)해 주세요";
+    }
+  }
+
+  function gotoNext(){
+    var list = pendingRows();
+    var next = list.filter(function(x){ return x.slot !== msgSlot; })[0] || list[0];
+    if (!next) { $("msgbox").hidden = true; adminNote("모두 보냈습니다"); return; }
+    openMsg(next.slot);
   }
 
   function setModeNote(text, retry){
@@ -2143,7 +2438,24 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
     adminCall("list", {}, function(d){ if (adminApply(d)) adminNote(adminRows.length + "건 · 방금 갱신"); });
   });
 
+  $("seg-book").addEventListener("click", function(){ msgKind = "book"; renderMsg(); });
+  $("seg-remind").addEventListener("click", function(){ msgKind = "remind"; renderMsg(); });
+  $("msg-close").addEventListener("click", function(){ $("msgbox").hidden = true; });
+  $("msg-next").addEventListener("click", gotoNext);
+  $("msg-copy").addEventListener("click", function(){ copyText($("msg-text").value, "문안을 복사했습니다 — 메시지 앱에 붙여넣으세요"); });
+  $("msg-copyphone").addEventListener("click", function(){ copyText($("msg-phone").textContent, "번호를 복사했습니다"); });
+  $("msg-done").addEventListener("click", function(){
+    var slot = msgSlot;
+    $("msg-note").textContent = "표시하는 중…";
+    adminCall("mark", { slot: slot, kind: msgKind, note: "수동 발송" }, function(d){
+      if (d && d.ok) { adminApply(d, "보냄으로 표시했습니다"); gotoNext(); }
+      else { $("msg-note").textContent = "표시하지 못했습니다" + (d && d.error ? " (" + d.error + ")" : ""); }
+    });
+  });
+
   $("admin-rows").addEventListener("click", function(e){
+    var msg = e.target.closest ? e.target.closest("[data-msg]") : null;
+    if (msg) { openMsg(msg.dataset.msg); return; }
     var again = e.target.closest ? e.target.closest("[data-resend]") : null;
     if (again) {
       adminNote("문자 보내는 중…");
