@@ -366,6 +366,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
           <span class="arow">
             <button type="button" class="ghost" id="admin-refresh">새로고침</button>
             <button type="button" class="ghost" id="copy-csv">CSV 복사</button>
+            <button type="button" class="ghost" id="send-all">미발송 문자 보내기</button>
           </span>
           <span class="mono" id="admin-note" style="font-size:12px;color:var(--faint)"></span>
         </div>
@@ -817,7 +818,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
-    if (action === "resend") { cb({ ok:false, error:"nosms" }); return; }
+    if (action === "resend" || action === "resendAll") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -993,6 +994,29 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   });
 
   $("admin-code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("admin-open").click(); });
+
+  $("send-all").addEventListener("click", function(){
+    var b = $("send-all");
+    if (b.dataset.armed !== "1") {
+      b.dataset.armed = "1";
+      b.textContent = "정말 보낼까요? 한 번 더";
+      setTimeout(function(){ if (b.dataset.armed === "1") { b.dataset.armed = ""; b.textContent = "미발송 문자 보내기"; } }, 5000);
+      return;
+    }
+    b.dataset.armed = "";
+    b.textContent = "보내는 중…";
+    b.disabled = true;
+    adminNote("문자 보내는 중… 20초쯤 걸립니다");
+    adminCall("resendAll", {}, function(d){
+      b.disabled = false;
+      b.textContent = "미발송 문자 보내기";
+      if (d && d.ok) {
+        adminApply(d, d.sent + "건 보냈습니다" + (d.left ? " · 남은 " + d.left + "건은 한 번 더 눌러 주세요" : ""));
+      } else {
+        adminApply(d && d.bookings ? { ok:true, bookings:d.bookings } : { ok:true }, "보내지 못했습니다" + (d && d.error ? " (" + d.error + ")" : ""));
+      }
+    });
+  });
 
   $("admin-refresh").addEventListener("click", function(){
     adminNote("불러오는 중…");
@@ -1462,6 +1486,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
           <span class="arow">
             <button type="button" class="ghost" id="admin-refresh">새로고침<\/button>
             <button type="button" class="ghost" id="copy-csv">CSV 복사<\/button>
+            <button type="button" class="ghost" id="send-all">미발송 문자 보내기<\/button>
           <\/span>
           <span class="mono" id="admin-note" style="font-size:12px;color:var(--faint)"><\/span>
         <\/div>
@@ -1913,7 +1938,7 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   function localAdmin(action, extra, cb){
     if (adminKey !== ADMIN_CODE) { cb({ ok:false, error:"unauthorized" }); return; }
     if (action === "list") { cb({ ok:true, bookings: state.bookings }); return; }
-    if (action === "resend") { cb({ ok:false, error:"nosms" }); return; }
+    if (action === "resend" || action === "resendAll") { cb({ ok:false, error:"nosms" }); return; }
 
     var next;
     if (action === "cancel") {
@@ -2089,6 +2114,29 @@ footer.foot{text-align:center;font-size:11.5px;color:var(--faint);padding:4px 0 
   });
 
   $("admin-code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("admin-open").click(); });
+
+  $("send-all").addEventListener("click", function(){
+    var b = $("send-all");
+    if (b.dataset.armed !== "1") {
+      b.dataset.armed = "1";
+      b.textContent = "정말 보낼까요? 한 번 더";
+      setTimeout(function(){ if (b.dataset.armed === "1") { b.dataset.armed = ""; b.textContent = "미발송 문자 보내기"; } }, 5000);
+      return;
+    }
+    b.dataset.armed = "";
+    b.textContent = "보내는 중…";
+    b.disabled = true;
+    adminNote("문자 보내는 중… 20초쯤 걸립니다");
+    adminCall("resendAll", {}, function(d){
+      b.disabled = false;
+      b.textContent = "미발송 문자 보내기";
+      if (d && d.ok) {
+        adminApply(d, d.sent + "건 보냈습니다" + (d.left ? " · 남은 " + d.left + "건은 한 번 더 눌러 주세요" : ""));
+      } else {
+        adminApply(d && d.bookings ? { ok:true, bookings:d.bookings } : { ok:true }, "보내지 못했습니다" + (d && d.error ? " (" + d.error + ")" : ""));
+      }
+    });
+  });
 
   $("admin-refresh").addEventListener("click", function(){
     adminNote("불러오는 중…");
